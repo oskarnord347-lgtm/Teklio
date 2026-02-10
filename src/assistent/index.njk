@@ -2,8 +2,10 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Teklio – Gerätehilfe</title>
-  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet" href="/assets/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -11,7 +13,7 @@
     Teklio – Dein Gerätehilfe-Assistent
     <p>Wähle dein Gerät und Problem aus, um eine Schritt-für-Schritt-Anleitung zu erhalten.</p>
   </header>
-  
+
   <main>
     <section class="controls">
       <div class="form-group">
@@ -36,31 +38,25 @@
       </div>
     </section>
 
-      <section id="anleitung" class="cards-container"></section>
+    <section id="anleitung" class="cards-container"></section>
 
-      <!-- Step Navigation -->
-      <div id="stepNav">
-        <button id="prevStep" disabled hidden>Zurück</button>
-        <span id="stepCounter" hidden>Schritt 1 / 5</span>
-        <button id="nextStep" disabled hidden>Weiter</button>
-      </div>
+    <div id="stepNav">
+      <button id="prevStep" disabled hidden>Zurück</button>
+      <span id="stepCounter" hidden>Schritt 1 / 5</span>
+      <button id="nextStep" disabled hidden>Weiter</button>
+    </div>
 
-      <div id="helpFeedback" style="display:none; text-align:center; margin-top:20px;">
-        <p style="font-weight:600;">Hat dieser Schritt geholfen?</p>
-        <button id="helpYes">Ja ✅</button>
-        <button id="helpNo">Nein ➡️</button>
-      </div>
+    <div id="helpFeedback" style="display:none; text-align:center; margin-top:20px;">
+      <p style="font-weight:600;">Hat dieser Schritt geholfen?</p>
+      <button id="helpYes">Ja ✅</button>
+      <button id="helpNo">Nein ➡️</button>
+    </div>
 
-      <div id="progressWrap">
-        <div id="progressBar"></div>
-      </div>
-
-
-
-
+    <div id="progressWrap">
+      <div id="progressBar"></div>
+    </div>
   </main>
 
-  <!-- Feedback -->
   <button id="feedbackBtn"><i class="fas fa-comment-dots"></i> Feedback / Hilfe</button>
   <div id="feedbackForm">
     <h3>Feedback / Hilfe</h3>
@@ -69,6 +65,6 @@
     <button id="sendFeedback">Senden</button>
   </div>
 
-  <script src="script.js"></script>
+  <script src="/assets/script.js"></script>
 </body>
 </html>

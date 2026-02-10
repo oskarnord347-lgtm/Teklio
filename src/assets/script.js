@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ======================
   // JSON LADEN
   // ======================
-  fetch('daten.json')
+  fetch('/assets/guides.json')
     .then(res => res.json())
     .then(data => {
       daten = data;

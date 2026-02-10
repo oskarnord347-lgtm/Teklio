@@ -4,13 +4,26 @@
   "description": "Website für digitales Produkt mit JSON-Datenbank und später KI-Funktionen",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "npx @11ty/eleventy --serve",
+    "build": "npx @11ty/eleventy"
   },
-  "author": "Oskar Minow",
+  "author": "Oskar",
   "license": "ISC",
   "dependencies": {
     "express": "^4.22.1"
   },
   "keywords": [],
-  "type": "commonjs"
+  "type": "commonjs",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oskarnord347-lgtm/Teklio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/oskarnord347-lgtm/Teklio/issues"
+  },
+  "homepage": "https://github.com/oskarnord347-lgtm/Teklio#readme"
 }
