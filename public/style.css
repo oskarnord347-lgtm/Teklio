@@ -1,0 +1,251 @@
+/* Allgemein */
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f5f7fa;
+  margin: 0;
+  color: #333;
+  font-size: 18px;
+  line-height: 1.6;     
+}
+
+/* Header */
+header {
+  background: #007bff;
+  color: #fff;
+  padding: 40px 20px;   
+  text-align: center;
+  font-size: 32px;       
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+
+/* Dropdowns */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 50px auto;
+  max-width: 900px;
+  gap: 30px;
+}
+
+
+.form-group {
+  flex: 1 1 45%;
+  margin-bottom: 25px;
+}
+
+label {
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+select {
+  width: 100%;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid #ccc; 
+  font-size: 18px;
+  transition: 0.2s;
+}
+
+select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0,123,255,0.3);
+  outline: none;
+}
+
+/* Karten für Schritt-für-Schritt */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin: 0 auto 60px auto;
+  max-width: 1000px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  padding: 25px;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.card h3 {
+  color: #007bff;
+  margin-top: 0;
+  font-size: 20px;
+}
+
+.card ul {
+  padding-left: 20px;
+  margin: 10px 0 0 0;
+}
+
+.card li {
+  margin-bottom: 10px;
+  font-size: 17px;
+}
+
+/* Schwierigkeit farbig */
+.card[data-difficulty="leicht"] { border-left: 5px solid #28a745; }
+.card[data-difficulty="mittel"] { border-left: 5px solid #ffc107; }
+.card[data-difficulty="schwer"] { border-left: 5px solid #dc3545; }
+
+/* Feedback Button */
+#feedbackBtn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 15px 20px;
+  border-radius: 50px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 1000;
+  transition: 0.3s;
+}
+
+#feedbackBtn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* Feedback Form */
+#feedbackForm {
+  display: none;
+  position: fixed;
+  bottom: 80px;
+  right: 25px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  width: 300px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  z-index: 1001;
+}
+
+#feedbackForm input, #feedbackForm textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+#feedbackForm button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+#feedbackForm button:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .form-group { flex: 1 1 100%; }
+}
+
+/* Step Navigation */
+#stepNav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin: 30px auto 60px auto;
+  max-width: 600px;
+  text-align: center;
+}
+
+#stepNav button {
+  padding: 14px 28px;
+  font-size: 18px;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  color: #fff;
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+}
+
+#stepNav button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+#stepNav button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+#stepCounter {
+  font-size: 18px;
+  font-weight: 600;
+  color: #555;
+  margin: 0 10px;
+}
+
+#helpFeedback button {
+  padding: 12px 24px;
+  border-radius: 40px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 6px 10px;
+  transition: 0.2s;
+}
+
+#helpYes {
+  background: #28a745;
+  color: white;
+}
+
+#helpNo {
+  background: #ffc107;
+  color: black;
+}
+
+#helpFeedback button:hover {
+  transform: translateY(-2px);
+}
+
+#progressWrap {
+  width: 100%;
+  max-width: 600px;
+  height: 14px;
+  background: #e9edf3;
+  border-radius: 50px;
+  margin: 20px auto 40px auto;
+  overflow: hidden;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.08);
+}
+
+#progressBar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  border-radius: 50px;
+  transition: width 0.4s ease;
+}

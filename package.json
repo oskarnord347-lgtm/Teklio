@@ -1,0 +1,16 @@
+{
+  "name": "teklio",
+  "version": "1.0.0",
+  "description": "Website für digitales Produkt mit JSON-Datenbank und später KI-Funktionen",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Oskar Minow",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.22.1"
+  },
+  "keywords": [],
+  "type": "commonjs"
+}
