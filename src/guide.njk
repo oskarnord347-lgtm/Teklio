@@ -1,0 +1,50 @@
+---
+pagination:
+  data: guidesPages
+  size: 1
+  alias: page
+permalink: "{{ page.url }}index.html"
+---
+
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{{ page.title }}</title>
+  <meta name="description" content="{{ page.description }}" />
+  <link rel="stylesheet" href="/assets/style.css" />
+</head>
+<body>
+  <header>
+    <a href="/">Teklio</a>
+    <p>Schritt-für-Schritt Hilfe</p>
+  </header>
+
+  <main class="cards-container">
+    <div class="card">
+      <h1>{{ page.title }}</h1>
+
+      <p>
+        <strong>Gerät:</strong> {{ page.deviceName }}<br>
+        <strong>Variante:</strong> {{ page.brandName }}
+        {% if page.system %}<br><strong>System:</strong> {{ page.system }}{% endif %}
+        {% if page.difficulty %}<br><strong>Schwierigkeit:</strong> {{ page.difficulty }}{% endif %}
+      </p>
+
+      <h2>So lösen Sie es</h2>
+      <ol>
+        {% for s in page.steps %}
+          <li>{{ s }}</li>
+        {% endfor %}
+      </ol>
+
+      <p style="margin-top: 16px;">
+        <a href="/assistent/">Zum Assistenten</a>
+      </p>
+    </div>
+  </main>
+
+  <script src="/assets/script.js"></script>
+</body>
+</html>
