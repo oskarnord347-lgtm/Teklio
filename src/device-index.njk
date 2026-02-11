@@ -1,0 +1,40 @@
+---
+pagination:
+  data: deviceIndexPages
+  size: 1
+  alias: dev
+permalink: "{{ dev.url }}index.html"
+---
+
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{{ dev.deviceName }} – Übersicht | Teklio</title>
+  <meta name="description" content="Übersicht: Probleme & Anleitungen für {{ dev.deviceName }}." />
+  <link rel="stylesheet" href="/assets/style.css" />
+</head>
+<body>
+  <header>
+    <a href="/">Teklio</a>
+    <p>Übersicht für {{ dev.deviceName }}</p>
+  </header>
+
+  <main class="cards-container">
+    <div class="card">
+      <h1>{{ dev.deviceName }}</h1>
+      <p>Wählen Sie eine Marke/System oder starten Sie mit „Allgemein“.</p>
+
+      <ul>
+        <li><a href="/{{ dev.deviceSlug }}/allgemein/">Allgemein</a></li>
+        <li><a href="/assistent/">Zum Assistenten</a></li>
+      </ul>
+
+      <p style="margin-top: 16px;">
+        Tipp: Nutzen Sie „Allgemein“, wenn Sie Ihre Marke nicht kennen.
+      </p>
+    </div>
+  </main>
+</body>
+</html>

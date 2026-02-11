@@ -1,0 +1,45 @@
+---
+pagination:
+  data: brandIndexPages
+  size: 1
+  alias: b
+permalink: "{{ b.url }}index.html"
+---
+
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{{ b.deviceName }} – {{ b.brandName }} | Teklio</title>
+  <meta name="description" content="Alle Anleitungen für {{ b.brandName }} {{ b.deviceName }}." />
+  <link rel="stylesheet" href="/assets/style.css" />
+</head>
+<body>
+  <header>
+    <a href="/">Teklio</a>
+    <p><a href="/{{ b.deviceSlug }}/">{{ b.deviceName }}</a> → {{ b.brandName }}</p>
+  </header>
+
+  <main class="cards-container">
+    <div class="card">
+      <h1>{{ b.brandName }} – {{ b.deviceName }}</h1>
+
+      {% if b.system %}
+        <p><strong>System:</strong> {{ b.system }}</p>
+      {% endif %}
+
+      <h2>Probleme</h2>
+      <ul>
+        {% for i in b.issues %}
+          <li><a href="{{ i.url }}">{{ i.issueName }}</a></li>
+        {% endfor %}
+      </ul>
+
+      <p style="margin-top: 16px;">
+        <a href="/assistent/">Zum Assistenten</a>
+      </p>
+    </div>
+  </main>
+</body>
+</html>
