@@ -1,70 +1,132 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Teklio – Gerätehilfe</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <link rel="stylesheet" href="/assets/style.css">
+  <title>
+    
+      Assistent | Teklio
+    
+  </title>
+
+  
+    <meta name="description" content="Wähle Gerät, Marke/System und Problem – und erhalte eine einfache Schritt-für-Schritt Anleitung." />
+  
+
+  
+
+  <meta property="og:site_name" content="Teklio" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Assistent | Teklio" />
+  <meta property="og:description" content="Wähle Gerät, Marke/System und Problem – und erhalte eine einfache Schritt-für-Schritt Anleitung." />
+
+  <link rel="stylesheet" href="/assets/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
-  <header>
-    Teklio – Dein Gerätehilfe-Assistent
-    <p>Wähle dein Gerät und Problem aus, um eine Schritt-für-Schritt-Anleitung zu erhalten.</p>
-  </header>
+  <a class="skip-link" href="#content">Zum Inhalt springen</a>
 
-  <main>
-    <section class="controls">
-      <div class="form-group">
-        <label for="geraetSelect">Gerät auswählen:</label>
-        <select id="geraetSelect">
-          <option value="">--Bitte wählen--</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="markeSelect">Marke / Betriebssystem auswählen:</label>
-        <select id="markeSelect" disabled>
-          <option value="">--Bitte wählen--</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="problemSelect">Problem auswählen:</label>
-        <select id="problemSelect" disabled>
-          <option value="">--Bitte wählen--</option>
-        </select>
-      </div>
-    </section>
-
-    <section id="anleitung" class="cards-container"></section>
-
-    <div id="stepNav">
-      <button id="prevStep" disabled hidden>Zurück</button>
-      <span id="stepCounter" hidden>Schritt 1 / 5</span>
-      <button id="nextStep" disabled hidden>Weiter</button>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/">Teklio</a>
+      <nav class="site-nav" aria-label="Hauptnavigation">
+        <a href="/assistent/">Assistent</a>
+        <a href="/">Suche</a>
+      </nav>
     </div>
+    <div class="theme-menu" aria-label="Theme">
+  <button class="theme-btn" type="button" id="themeBtn" aria-haspopup="true" aria-expanded="false">
+    <span class="theme-icon" aria-hidden="true">🌓</span>
+    <span class="theme-label">Theme</span>
+  </button>
 
-    <div id="helpFeedback" style="display:none; text-align:center; margin-top:20px;">
-      <p style="font-weight:600;">Hat dieser Schritt geholfen?</p>
-      <button id="helpYes">Ja ✅</button>
-      <button id="helpNo">Nein ➡️</button>
-    </div>
-
-    <div id="progressWrap">
-      <div id="progressBar"></div>
-    </div>
-  </main>
-
-  <button id="feedbackBtn"><i class="fas fa-comment-dots"></i> Feedback / Hilfe</button>
-  <div id="feedbackForm">
-    <h3>Feedback / Hilfe</h3>
-    <input type="text" id="name" placeholder="Dein Name">
-    <textarea id="message" rows="4" placeholder="Deine Nachricht"></textarea>
-    <button id="sendFeedback">Senden</button>
+  <div class="theme-popover" id="themePopover" role="menu" aria-label="Theme auswählen">
+    <button type="button" class="theme-option" data-theme-choice="system" role="menuitem">System</button>
+    <button type="button" class="theme-option" data-theme-choice="light" role="menuitem">Hell</button>
+    <button type="button" class="theme-option" data-theme-choice="dark" role="menuitem">Dunkel</button>
+  </div>
   </div>
 
-  <script src="/assets/script.js"></script>
+  </header>
+
+  
+  
+
+  <main id="content" class="wrap">
+    
+<header>
+  Teklio – Dein Gerätehilfe-Assistent
+  <p>Wähle dein Gerät und Problem aus, um eine Schritt-für-Schritt-Anleitung zu erhalten.</p>
+</header>
+
+<main>
+  <section class="controls">
+    <div class="form-group">
+      <label for="geraetSelect">Gerät auswählen:</label>
+      <select id="geraetSelect">
+        <option value="">--Bitte wählen--</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="markeSelect">Marke / Betriebssystem auswählen:</label>
+      <select id="markeSelect" disabled>
+        <option value="">--Bitte wählen--</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="problemSelect">Problem auswählen:</label>
+      <select id="problemSelect" disabled>
+        <option value="">--Bitte wählen--</option>
+      </select>
+    </div>
+  </section>
+
+  <section id="anleitung" class="cards-container"></section>
+
+  <div id="stepNav">
+    <button id="prevStep" disabled hidden>Zurück</button>
+    <span id="stepCounter" hidden>Schritt 1 / 5</span>
+    <button id="nextStep" disabled hidden>Weiter</button>
+  </div>
+
+  <div id="helpFeedback" style="display:none; text-align:center; margin-top:20px;">
+    <p style="font-weight:600;">Hat dieser Schritt geholfen?</p>
+    <button id="helpYes">Ja ✅</button>
+    <button id="helpNo">Nein ➡️</button>
+  </div>
+
+  <div id="progressWrap">
+    <div id="progressBar"></div>
+  </div>
+</main>
+
+<button id="feedbackBtn"><i class="fas fa-comment-dots"></i> Feedback / Hilfe</button>
+<div id="feedbackForm">
+  <h3>Feedback / Hilfe</h3>
+  <input type="text" id="name" placeholder="Dein Name">
+  <textarea id="message" rows="4" placeholder="Deine Nachricht"></textarea>
+  <button id="sendFeedback">Senden</button>
+</div>
+
+<script src="/assets/script.js"></script>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <small>
+        © 2026 Teklio ·
+        <a href="/impressum/">Impressum</a> ·
+        <a href="/datenschutz/">Datenschutz</a>
+      </small>
+    </div>
+  </footer>
+  <script src="/assets/script.js" defer></script>
+
 </body>
 </html>

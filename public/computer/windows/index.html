@@ -3,42 +3,97 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Computer – Windows | Teklio</title>
-  <meta name="description" content="Alle Anleitungen für Windows Computer." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>
+    
+      {{ brand.deviceName }} – {{ brand.brandName }} | Teklio
+    
+  </title>
+
+  
+    <meta name="description" content="Anleitungen für {{ brand.deviceName }} ({{ brand.brandName }}) – Schritt für Schritt, einfach erklärt." />
+  
+
+  
+    <link rel="canonical" href="https://teklio.de{{ brand.url }}" />
+  
+
+  <meta property="og:site_name" content="Teklio" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="{{ brand.deviceName }} – {{ brand.brandName }} | Teklio" />
+  <meta property="og:description" content="Anleitungen für {{ brand.deviceName }} ({{ brand.brandName }}) – Schritt für Schritt, einfach erklärt." />
+
   <link rel="stylesheet" href="/assets/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
-  <header>
-    <a href="/">Teklio</a>
-    <p><a href="/computer/">Computer</a> → Windows</p>
+  <a class="skip-link" href="#content">Zum Inhalt springen</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/">Teklio</a>
+      <nav class="site-nav" aria-label="Hauptnavigation">
+        <a href="/assistent/">Assistent</a>
+        <a href="/">Suche</a>
+      </nav>
+    </div>
+    <div class="theme-menu" aria-label="Theme">
+  <button class="theme-btn" type="button" id="themeBtn" aria-haspopup="true" aria-expanded="false">
+    <span class="theme-icon" aria-hidden="true">🌓</span>
+    <span class="theme-label">Theme</span>
+  </button>
+
+  <div class="theme-popover" id="themePopover" role="menu" aria-label="Theme auswählen">
+    <button type="button" class="theme-option" data-theme-choice="system" role="menuitem">System</button>
+    <button type="button" class="theme-option" data-theme-choice="light" role="menuitem">Hell</button>
+    <button type="button" class="theme-option" data-theme-choice="dark" role="menuitem">Dunkel</button>
+  </div>
+  </div>
+
   </header>
 
-  <main class="cards-container">
-    <div class="card">
-      <h1>Windows – Computer</h1>
+  
+  
 
-      
+  <main id="content" class="wrap">
+    
+<h1>Windows – Computer</h1>
 
-      <h2>Probleme</h2>
-      <ul>
-        
-          <li><a href="/computer/windows/pc-startet-nicht/">PC startet nicht</a></li>
-        
-          <li><a href="/computer/windows/kein-internet/">Kein Internet</a></li>
-        
-          <li><a href="/computer/windows/langsam-haengt-sich-auf/">Langsam / Hängt sich auf</a></li>
-        
-          <li><a href="/computer/windows/drucker-funktioniert-nicht/">Drucker funktioniert nicht</a></li>
-        
-          <li><a href="/computer/windows/software-laesst-sich-nicht-installieren/">Software lässt sich nicht installieren</a></li>
-        
-      </ul>
 
-      <p style="margin-top: 16px;">
-        <a href="/assistent/">Zum Assistenten</a>
-      </p>
-    </div>
+
+<h2>Probleme</h2>
+<ul>
+  
+    <li><a href="/computer/windows/pc-startet-nicht/">PC startet nicht</a></li>
+  
+    <li><a href="/computer/windows/kein-internet/">Kein Internet</a></li>
+  
+    <li><a href="/computer/windows/langsam-haengt-sich-auf/">Langsam / Hängt sich auf</a></li>
+  
+    <li><a href="/computer/windows/drucker-funktioniert-nicht/">Drucker funktioniert nicht</a></li>
+  
+    <li><a href="/computer/windows/software-laesst-sich-nicht-installieren/">Software lässt sich nicht installieren</a></li>
+  
+</ul>
+
+<p style="margin-top: 16px;">
+  <a href="/assistent/">Zum Assistenten</a>
+</p>
+
   </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <small>
+        © 2026 Teklio ·
+        <a href="/impressum/">Impressum</a> ·
+        <a href="/datenschutz/">Datenschutz</a>
+      </small>
+    </div>
+  </footer>
+  <script src="/assets/script.js" defer></script>
+
 </body>
 </html>

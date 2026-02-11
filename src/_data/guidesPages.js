@@ -40,11 +40,15 @@ module.exports = () => {
     const generalKey = findGeneralProblemsKey(deviceObj);
     if (!generalKey) continue;
 
+    const deviceSlug = slugify(deviceName);
+
     const generalProblems = deviceObj[generalKey] || {};
     const brandsContainer = deviceObj.Marken || deviceObj.Systeme || {};
     const brandNames = Object.keys(brandsContainer);
 
     for (const issueName of Object.keys(generalProblems)) {
+      const issueSlug = slugify(issueName);
+
       const base = generalProblems[issueName];
       const baseSteps = Array.isArray(base.steps) ? base.steps : [];
       const difficulty = base.difficulty || null;
@@ -52,18 +56,32 @@ module.exports = () => {
       // 1) Allgemeine Seite
       pages.push({
         deviceName,
+        deviceSlug,
+
         brandName: "Allgemein",
+        brandSlug: "allgemein",
+
         system: null,
+
         issueName,
+        issueSlug,
+
         difficulty,
         steps: baseSteps,
-        url: `/${slugify(deviceName)}/allgemein/${slugify(issueName)}/`,
+
+        // WICHTIG für Breadcrumbs:
+        deviceUrl: `/${deviceSlug}/`,
+        brandUrl: `/${deviceSlug}/allgemein/`,
+
+        url: `/${deviceSlug}/allgemein/${issueSlug}/`,
         title: `${deviceName}: ${issueName} – Schritt-für-Schritt`,
         description: `Einfache Schritt-für-Schritt Anleitung: ${issueName} (${deviceName}).`,
       });
 
       // 2) Marken/System-Seiten (mit overrides)
       for (const brandName of brandNames) {
+        const brandSlug = slugify(brandName);
+
         const brandData = brandsContainer[brandName] || {};
         const overrides = brandData.overrides || {};
         let overrideSteps = [];
@@ -81,12 +99,24 @@ module.exports = () => {
 
         pages.push({
           deviceName,
+          deviceSlug,
+
           brandName,
+          brandSlug,
+
           system,
+
           issueName,
+          issueSlug,
+
           difficulty,
           steps: mergedSteps,
-          url: `/${slugify(deviceName)}/${slugify(brandName)}/${slugify(issueName)}/`,
+
+          // WICHTIG für Breadcrumbs:
+          deviceUrl: `/${deviceSlug}/`,
+          brandUrl: `/${deviceSlug}/${brandSlug}/`,
+
+          url: `/${deviceSlug}/${brandSlug}/${issueSlug}/`,
           title: `${brandName} ${deviceName}: ${issueName} – Schritt-für-Schritt`,
           description: `Schritt-für-Schritt Hilfe für ${brandName} ${deviceName}: ${issueName}.`,
         });

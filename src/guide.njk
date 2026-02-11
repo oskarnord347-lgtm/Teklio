@@ -1,81 +1,32 @@
 ---
+layout: layouts/base.njk
 pagination:
   data: guidesPages
   size: 1
-  alias: page
-permalink: "{{ page.url }}index.html"
+  alias: guide
+permalink: "{{ guide.url }}index.html"
+title: "{{ guide.title }}"
+description: "{{ guide.description }}"
+canonical: "https://teklio.de{{ guide.url }}"
 ---
 
-<!doctype html>
-<html lang="de">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>{{ page.title }}</title>
-  <meta name="description" content="{{ page.description }}" />
-  <link rel="stylesheet" href="/assets/style.css" />
-</head>
-<body>
-  <header>
-    <a href="/">Teklio</a>
-    <p>Schritt-für-Schritt Hilfe</p>
-  </header>
+<h1>{{ guide.title }}</h1>
 
-  <main class="cards-container">
-    <div class="card">
-      <h1>{{ page.title }}</h1>
+<div class="guide-meta">
+  {% if guide.difficulty %}<span class="badge">🧩 Schwierigkeit: {{ guide.difficulty }}</span>{% endif %}
+  {% if guide.system %}<span class="badge">💻 System: {{ guide.system }}</span>{% endif %}
+</div>
 
-      <p>
-        <strong>Gerät:</strong> {{ page.deviceName }}<br>
-        <strong>Variante:</strong> {{ page.brandName }}
-        {% if page.system %}<br><strong>System:</strong> {{ page.system }}{% endif %}
-        {% if page.difficulty %}<br><strong>Schwierigkeit:</strong> {{ page.difficulty }}{% endif %}
-      </p>
+<div class="guide-steps">
+  <h2>So lösen Sie es</h2>
+  <ol>
+    {% for s in guide.steps %}
+      <li>{{ s }}</li>
+    {% endfor %}
+  </ol>
 
-      <h2>So lösen Sie es</h2>
-      <ol>
-        {% for s in page.steps %}
-          <li>{{ s }}</li>
-        {% endfor %}
-      </ol>
-      {% set deviceSlug = page.url.split('/')[1] %}
-      {% set brandSlug  = page.url.split('/')[2] %}
-      {% set issueSlug  = page.url.split('/')[3] %}
+  <p style="margin-top:16px;">
+    <a href="/assistent/">Zum Assistenten</a>
+  </p>
+</div>
 
-      <hr style="margin: 24px 0;" />
-
-      <h2>Weitere Hilfe</h2>
-
-      <p>
-      <a href="/{{ deviceSlug }}/">Zur {{ page.deviceName }}-Übersicht</a>
-      ·
-      <a href="/{{ deviceSlug }}/{{ brandSlug }}/">Zur Übersicht für {{ page.brandName }}</a>
-      </p>
-
-      <h3>Weitere Probleme für {{ page.brandName }} {{ page.deviceName }}</h3>
-      <ul>
-      {% for i in siteIndex.byDevice[deviceSlug].issues %}
-        {% if i.issueSlug != issueSlug %}
-        <li><a href="/{{ deviceSlug }}/{{ brandSlug }}/{{ i.issueSlug }}/">{{ i.issueName }}</a></li>
-        {% endif %}
-      {% endfor %}
-      </ul>
-
-      <h3>{{ page.issueName }} für andere Marken</h3>
-      <ul>
-      {% for br in siteIndex.byDevice[deviceSlug].brands %}
-        {% if br.brandSlug != brandSlug %}
-        <li><a href="/{{ deviceSlug }}/{{ br.brandSlug }}/{{ issueSlug }}/">{{ br.brandName }}</a></li>
-        {% endif %}
-      {% endfor %}
-      </ul>
-
-      <p style="margin-top: 16px;">
-        <a href="/assistent/">Zum Assistenten</a>
-      </p>
-    </div>
-  </main>
-
-  <script src="/assets/script.js"></script>
-</body>
-</html>

@@ -323,3 +323,74 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('message').value = '';
   });
 });
+
+(function themeInit(){
+  const STORAGE_KEY = "teklio-theme"; // "light" | "dark" | "system"
+  const root = document.documentElement;
+
+  function getSystemTheme() {
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  }
+
+  function applyTheme(choice) {
+    const theme = choice === "system" ? getSystemTheme() : choice;
+    root.setAttribute("data-theme", theme);
+  }
+
+  // Load saved choice
+  const saved = localStorage.getItem(STORAGE_KEY) || "system";
+  applyTheme(saved);
+
+  // Keep in sync if system changes AND choice is system
+  if (window.matchMedia) {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener?.("change", () => {
+      const currentChoice = localStorage.getItem(STORAGE_KEY) || "system";
+      if (currentChoice === "system") applyTheme("system");
+    });
+  }
+
+  // UI wiring (optional if menu not present on page)
+  const btn = document.getElementById("themeBtn");
+  const pop = document.getElementById("themePopover");
+  if (!btn || !pop) return;
+
+  function setActive(choice) {
+    pop.querySelectorAll(".theme-option").forEach(el => {
+      el.classList.toggle("active", el.dataset.themeChoice === choice);
+    });
+  }
+  setActive(saved);
+
+  function openPopover() {
+    pop.classList.add("open");
+    btn.setAttribute("aria-expanded", "true");
+  }
+  function closePopover() {
+    pop.classList.remove("open");
+    btn.setAttribute("aria-expanded", "false");
+  }
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (pop.classList.contains("open")) closePopover();
+    else openPopover();
+  });
+
+  pop.addEventListener("click", (e) => {
+    const opt = e.target.closest(".theme-option");
+    if (!opt) return;
+    const choice = opt.dataset.themeChoice;
+    localStorage.setItem(STORAGE_KEY, choice);
+    applyTheme(choice);
+    setActive(choice);
+    closePopover();
+  });
+
+  document.addEventListener("click", () => closePopover());
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closePopover();
+  });
+})();

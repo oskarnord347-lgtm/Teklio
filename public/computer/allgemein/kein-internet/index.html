@@ -3,102 +3,114 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Computer: Kein Internet – Schritt-für-Schritt</title>
-  <meta name="description" content="Einfache Schritt-für-Schritt Anleitung: Kein Internet (Computer)." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>
+    
+      {{ guide.title }} | Teklio
+    
+  </title>
+
+  
+    <meta name="description" content="{{ guide.description }}" />
+  
+
+  
+    <link rel="canonical" href="https://teklio.de{{ guide.url }}" />
+  
+
+  <meta property="og:site_name" content="Teklio" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="{{ guide.title }} | Teklio" />
+  <meta property="og:description" content="{{ guide.description }}" />
+
   <link rel="stylesheet" href="/assets/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
-  <header>
-    <a href="/">Teklio</a>
-    <p>Schritt-für-Schritt Hilfe</p>
+  <a class="skip-link" href="#content">Zum Inhalt springen</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/">Teklio</a>
+      <nav class="site-nav" aria-label="Hauptnavigation">
+        <a href="/assistent/">Assistent</a>
+        <a href="/">Suche</a>
+      </nav>
+    </div>
+    <div class="theme-menu" aria-label="Theme">
+  <button class="theme-btn" type="button" id="themeBtn" aria-haspopup="true" aria-expanded="false">
+    <span class="theme-icon" aria-hidden="true">🌓</span>
+    <span class="theme-label">Theme</span>
+  </button>
+
+  <div class="theme-popover" id="themePopover" role="menu" aria-label="Theme auswählen">
+    <button type="button" class="theme-option" data-theme-choice="system" role="menuitem">System</button>
+    <button type="button" class="theme-option" data-theme-choice="light" role="menuitem">Hell</button>
+    <button type="button" class="theme-option" data-theme-choice="dark" role="menuitem">Dunkel</button>
+  </div>
+  </div>
+
   </header>
 
-  <main class="cards-container">
-    <div class="card">
-      <h1>Computer: Kein Internet – Schritt-für-Schritt</h1>
-
-      <p>
-        <strong>Gerät:</strong> Computer<br>
-        <strong>Variante:</strong> Allgemein
-        
-        <br><strong>Schwierigkeit:</strong> leicht
-      </p>
-
-      <h2>So lösen Sie es</h2>
+  
+  
+    <nav class="breadcrumbs wrap" aria-label="Breadcrumb">
       <ol>
-        
-          <li>Überprüfe, ob das Netzwerkkabel angeschlossen ist.</li>
-        
-          <li>Starte den Router neu.</li>
-        
-          <li>Prüfe, ob der Flugmodus aktiviert ist.</li>
-        
-          <li>Starte den PC neu.</li>
-        
+        <li><a href="/">Start</a></li>
+        <li><a href="/computer/">Computer</a></li>
+        <li><a href="/computer/allgemein/">Allgemein</a></li>
+        <li><a href="/computer/allgemein/kein-internet/">Kein Internet</a></li>
       </ol>
-      
-      
-      
+    </nav>
+  
 
-      <hr style="margin: 24px 0;" />
+  <main id="content" class="wrap">
+    
+<h1>Computer: Kein Internet – Schritt-für-Schritt</h1>
 
-      <h2>Weitere Hilfe</h2>
+<div class="guide-meta">
+  <span class="badge">🧩 Schwierigkeit: leicht</span>
+  
+</div>
 
-      <p>
-      <a href="/computer/">Zur Computer-Übersicht</a>
-      ·
-      <a href="/computer/allgemein/">Zur Übersicht für Allgemein</a>
-      </p>
+<div class="guide-steps">
+  <h2>So lösen Sie es</h2>
+  <ol>
+    
+      <li>Prüfe, ob das Internet grundsätzlich funktioniert: geht es am Handy im gleichen WLAN?</li>
+    
+      <li>Wenn LAN-Kabel: Kabel fest einstecken und wenn möglich anderes Kabel/anderen Port am Router testen.</li>
+    
+      <li>Wenn WLAN: Flugmodus ausschalten und WLAN einschalten; ggf. kurz WLAN aus/an.</li>
+    
+      <li>Starte den Router neu (30 Sekunden vom Strom, dann 2–5 Minuten warten).</li>
+    
+      <li>Starte den PC neu.</li>
+    
+      <li>Wenn es nur am PC nicht geht: Netzwerkverbindung „trennen/verbinden“ und ggf. das WLAN-Passwort neu eingeben.</li>
+    
+  </ol>
 
-      <h3>Weitere Probleme für Allgemein Computer</h3>
-      <ul>
-      
-        
-        <li><a href="/computer/allgemein/pc-startet-nicht/">PC startet nicht</a></li>
-        
-      
-        
-      
-        
-        <li><a href="/computer/allgemein/langsam-haengt-sich-auf/">Langsam / Hängt sich auf</a></li>
-        
-      
-        
-        <li><a href="/computer/allgemein/drucker-funktioniert-nicht/">Drucker funktioniert nicht</a></li>
-        
-      
-        
-        <li><a href="/computer/allgemein/software-laesst-sich-nicht-installieren/">Software lässt sich nicht installieren</a></li>
-        
-      
-      </ul>
+  <p style="margin-top:16px;">
+    <a href="/assistent/">Zum Assistenten</a>
+  </p>
+</div>
 
-      <h3>Kein Internet für andere Marken</h3>
-      <ul>
-      
-        
-      
-        
-        <li><a href="/computer/windows/kein-internet/">Windows</a></li>
-        
-      
-        
-        <li><a href="/computer/mac/kein-internet/">Mac</a></li>
-        
-      
-        
-        <li><a href="/computer/linux/kein-internet/">Linux</a></li>
-        
-      
-      </ul>
 
-      <p style="margin-top: 16px;">
-        <a href="/assistent/">Zum Assistenten</a>
-      </p>
-    </div>
   </main>
 
-  <script src="/assets/script.js"></script>
+  <footer class="site-footer">
+    <div class="wrap">
+      <small>
+        © 2026 Teklio ·
+        <a href="/impressum/">Impressum</a> ·
+        <a href="/datenschutz/">Datenschutz</a>
+      </small>
+    </div>
+  </footer>
+  <script src="/assets/script.js" defer></script>
+
 </body>
 </html>

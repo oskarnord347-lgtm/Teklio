@@ -1,33 +1,43 @@
 ---
+layout: layouts/base.njk
 pagination:
   data: deviceIndexPages
   size: 1
-  alias: dev
-permalink: "{{ dev.url }}index.html"
+  alias: device
+permalink: "{{ device.url }}index.html"
+title: "{{ device.deviceName }}"
+description: "Alle Anleitungen und häufigen Probleme für {{ device.deviceName }} – einfach erklärt."
+canonical: "https://teklio.de{{ device.url }}"
+breadcrumbs:
+  - { name: "Start", url: "/" }
+  - { name: "{{ device.deviceName }}", url: "{{ device.url }}" }
 ---
+
+
+
 
 <!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>{{ dev.deviceName }} – Übersicht | Teklio</title>
-  <meta name="description" content="Übersicht: Probleme & Anleitungen für {{ dev.deviceName }}." />
+  <title>{{ device.deviceName }} – Übersicht | Teklio</title>
+  <meta name="description" content="Übersicht: Probleme & Anleitungen für {{ device.deviceName }}." />
   <link rel="stylesheet" href="/assets/style.css" />
 </head>
 <body>
   <header>
     <a href="/">Teklio</a>
-    <p>Übersicht für {{ dev.deviceName }}</p>
+    <p>Übersicht für {{ device.deviceName }}</p>
   </header>
 
   <main class="cards-container">
     <div class="card">
-      <h1>{{ dev.deviceName }}</h1>
+      <h1>{{ device.deviceName }}</h1>
       <p>Wählen Sie eine Marke/System oder starten Sie mit „Allgemein“.</p>
 
       <ul>
-        <li><a href="/{{ dev.deviceSlug }}/allgemein/">Allgemein</a></li>
+        <li><a href="/{{ device.deviceSlug }}/allgemein/">Allgemein</a></li>
         <li><a href="/assistent/">Zum Assistenten</a></li>
       </ul>
 

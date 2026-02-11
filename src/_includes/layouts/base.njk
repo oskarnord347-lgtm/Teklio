@@ -1,4 +1,4 @@
-
+{# src/_includes/layouts/base.njk #}
 <!doctype html>
 <html lang="de">
 <head>
@@ -6,23 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>
-    
-      {{ guide.title }} | Teklio
-    
+    {% if title %}
+      {{ title }} | Teklio
+    {% else %}
+      Teklio – einfache Hilfe bei Technikproblemen
+    {% endif %}
   </title>
 
-  
-    <meta name="description" content="{{ guide.description }}" />
-  
+  {% if description %}
+    <meta name="description" content="{{ description | safe }}" />
+  {% else %}
+    <meta name="description" content="Einfache Schritt-für-Schritt Anleitungen für Fernseher, Handy und Computer – besonders verständlich für Einsteiger." />
+  {% endif %}
 
-  
-    <link rel="canonical" href="https://teklio.de{{ guide.url }}" />
-  
+  {% if canonical %}
+    <link rel="canonical" href="{{ canonical }}" />
+  {% endif %}
 
   <meta property="og:site_name" content="Teklio" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="{{ guide.title }} | Teklio" />
-  <meta property="og:description" content="{{ guide.description }}" />
+  <meta property="og:title" content="{% if title %}{{ title }} | Teklio{% else %}Teklio{% endif %}" />
+  <meta property="og:description" content="{% if description %}{{ description | safe }}{% else %}Einfache Schritt-für-Schritt Technik-Anleitungen.{% endif %}" />
 
   <link rel="stylesheet" href="/assets/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -54,57 +58,26 @@
 
   </header>
 
-  
-  
+  {# Breadcrumbs für Guide-Seiten (alias: guide) #}
+  {% if guide %}
     <nav class="breadcrumbs wrap" aria-label="Breadcrumb">
       <ol>
         <li><a href="/">Start</a></li>
-        <li><a href="/computer/">Computer</a></li>
-        <li><a href="/computer/mac/">Mac</a></li>
-        <li><a href="/computer/mac/software-laesst-sich-nicht-installieren/">Software lässt sich nicht installieren</a></li>
+        <li><a href="{{ guide.deviceUrl }}">{{ guide.deviceName }}</a></li>
+        <li><a href="{{ guide.brandUrl }}">{{ guide.brandName }}</a></li>
+        <li><a href="{{ guide.url }}">{{ guide.issueName }}</a></li>
       </ol>
     </nav>
-  
+  {% endif %}
 
   <main id="content" class="wrap">
-    
-<h1>Mac Computer: Software lässt sich nicht installieren – Schritt-für-Schritt</h1>
-
-<div class="guide-meta">
-  <span class="badge">🧩 Schwierigkeit: leicht</span>
-  
-</div>
-
-<div class="guide-steps">
-  <h2>So lösen Sie es</h2>
-  <ol>
-    
-      <li>Prüfe den freien Speicherplatz (zu wenig Platz ist eine sehr häufige Ursache).</li>
-    
-      <li>Schließe andere Programme (besonders Installer/Updater oder sehr viele Browser-Tabs).</li>
-    
-      <li>Starte den PC neu und versuche die Installation erneut.</li>
-    
-      <li>Lade die Installationsdatei erneut von der offiziellen Quelle (defekte Downloads passieren).</li>
-    
-      <li>Starte die Installation mit Administratorrechten (Rechtsklick → „Als Administrator ausführen“), falls möglich.</li>
-    
-      <li>Wenn es immer noch scheitert: prüfe, ob deine Windows/Mac-Version unterstützt wird oder ob Sicherheitssoftware blockiert.</li>
-    
-  </ol>
-
-  <p style="margin-top:16px;">
-    <a href="/assistent/">Zum Assistenten</a>
-  </p>
-</div>
-
-
+    {{ content | safe }}
   </main>
 
   <footer class="site-footer">
     <div class="wrap">
       <small>
-        © 2026 Teklio ·
+        © {{ "now" | date("yyyy") }} Teklio ·
         <a href="/impressum/">Impressum</a> ·
         <a href="/datenschutz/">Datenschutz</a>
       </small>

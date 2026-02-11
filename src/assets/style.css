@@ -259,3 +259,313 @@ select:focus {
 .search-item a:hover {
   background: rgba(0,0,0,0.06);
 }
+
+/* ===== Teklio Layout UX/SEO ===== */
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 18px;
+}
+
+.site-header {
+  background: #007bff;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 18px;
+}
+
+.brand {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 24px;
+}
+
+.site-nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  margin-left: 14px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.15);
+}
+
+.site-nav a:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 10px;
+  background: #000;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 10px;
+  z-index: 9999;
+}
+.skip-link:focus {
+  left: 10px;
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  margin: 18px auto 0 auto;
+}
+.breadcrumbs ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.breadcrumbs li::after {
+  content: "›";
+  margin-left: 8px;
+  opacity: 0.6;
+}
+.breadcrumbs li:last-child::after {
+  content: "";
+}
+.breadcrumbs a {
+  text-decoration: none;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.06);
+  color: #222;
+  font-weight: 700;
+}
+.breadcrumbs a:hover {
+  background: rgba(0,0,0,0.1);
+}
+
+/* === Site Layout (global) === */
+:root{
+  --bg: #f5f7fa;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --brand: #007bff;
+  --brand2: #00c6ff;
+  --border: rgba(0,0,0,0.08);
+  --shadow: 0 10px 30px rgba(0,0,0,0.08);
+  --radius: 16px;
+}
+
+body{
+  color: var(--text);
+  background: var(--bg);
+}
+
+.wrap{
+  width: min(1100px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+a{
+  color: var(--brand);
+  text-decoration: none;
+}
+a:hover{ text-decoration: underline; }
+
+.site-header{
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(10px);
+  background: rgba(245,247,250,0.8);
+  border-bottom: 1px solid var(--border);
+}
+.site-header .wrap{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 14px 0;
+}
+.site-header .brand{
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  text-decoration:none;
+  font-size: 20px;
+}
+.site-nav a{
+  display:inline-block;
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: var(--text);
+  text-decoration:none;
+}
+.site-nav a:hover{
+  background: rgba(0,0,0,0.05);
+  text-decoration:none;
+}
+
+.breadcrumbs{
+  margin-top: 14px;
+}
+.breadcrumbs ol{
+  list-style:none;
+  display:flex;
+  flex-wrap:wrap;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+}
+.breadcrumbs li a{
+  display:inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.05);
+  color: var(--text);
+  text-decoration:none;
+  font-size: 14px;
+}
+.breadcrumbs li a:hover{
+  background: rgba(0,0,0,0.08);
+}
+
+main.wrap{
+  padding: 22px 0 60px;
+}
+
+/* === Guide Content === */
+main h1{
+  font-size: 34px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 18px 0 10px;
+}
+main h2{
+  margin-top: 24px;
+  font-size: 22px;
+}
+main p{
+  color: var(--muted);
+}
+
+.guide-meta{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 10px 0 18px;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+  font-size: 14px;
+  color: var(--text);
+}
+
+.guide-steps{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px 18px;
+}
+.guide-steps ol{
+  margin: 0;
+  padding-left: 20px;
+}
+.guide-steps li{
+  margin: 10px 0;
+}
+
+.site-footer{
+  margin-top: 60px;
+  padding: 28px 0;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 14px;
+}
+.site-footer a { color: inherit; }
+
+/* === Theme tokens === */
+:root{
+  color-scheme: light;
+  --bg: #f5f7fa;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --brand: #007bff;
+  --border: rgba(0,0,0,0.08);
+  --shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+html[data-theme="dark"]{
+  color-scheme: dark;
+  --bg: #0b1220;
+  --card: #0f1a2e;
+  --text: #e5e7eb;
+  --muted: #a6b0c3;
+  --brand: #6aa7ff;
+  --border: rgba(255,255,255,0.10);
+  --shadow: 0 14px 40px rgba(0,0,0,0.45);
+}
+
+/* Base surfaces */
+body{ background: var(--bg); color: var(--text); }
+.site-header{ background: color-mix(in srgb, var(--bg) 85%, transparent); border-bottom: 1px solid var(--border); }
+.site-footer{ border-top: 1px solid var(--border); color: var(--muted); }
+.badge, .guide-steps{ background: var(--card); border: 1px solid var(--border); box-shadow: var(--shadow); }
+a{ color: var(--brand); }
+
+/* === Theme menu === */
+.theme-menu{ position: relative; display: inline-block; }
+.theme-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+}
+.theme-btn:hover{ filter: brightness(1.03); }
+.theme-popover{
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 160px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 8px;
+  display: none;
+}
+.theme-popover.open{ display: block; }
+
+.theme-option{
+  width: 100%;
+  text-align: left;
+  padding: 10px 10px;
+  border-radius: 10px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+.theme-option:hover{ background: color-mix(in srgb, var(--text) 8%, transparent); }
+.theme-option.active{
+  background: color-mix(in srgb, var(--brand) 18%, transparent);
+}

@@ -4,53 +4,56 @@
       "Geht nicht an": {
         "difficulty": "leicht",
         "steps": [
-          "Stelle sicher, dass der Fernseher am Strom angeschlossen ist.",
-          "Überprüfe, ob das Netzkabel fest in der Steckdose steckt.",
-          "Teste die Steckdose mit einem anderen Gerät (z. B. Lampe).",
-          "Drücke den Einschaltknopf direkt am Fernseher.",
-          "Ziehe den Netzstecker für 10 Sekunden und stecke ihn wieder ein.",
-          "Wenn der Fernseher weiterhin nicht reagiert, könnte ein Defekt vorliegen."
+          "Prüfe, ob der Fernseher wirklich Strom bekommt (Stecker fest drin, Steckdose an).",
+          "Teste die Steckdose kurz mit einem anderen Gerät (z. B. Lampe oder Handyladegerät).",
+          "Wenn du eine Steckdosenleiste nutzt: Schalter an der Leiste prüfen und den TV direkt in die Wandsteckdose stecken.",
+          "Versuche den Fernseher am Knopf direkt am Gerät einzuschalten (nicht nur per Fernbedienung).",
+          "Ziehe den Netzstecker für 30 Sekunden und stecke ihn wieder ein (Soft-Reset).",
+          "Wenn weiterhin keine Reaktion kommt (kein Standby-Licht): mögliches Netzteil-/Hardwareproblem → Service/Hersteller kontaktieren."
         ]
       },
       "Kein Ton": {
         "difficulty": "leicht",
         "steps": [
-          "Erhöhe die Lautstärke am Fernseher.",
-          "Stelle sicher, dass der Ton nicht stummgeschaltet ist.",
-          "Überprüfe, ob Kopfhörer oder externe Lautsprecher angeschlossen sind.",
-          "Wechsle kurz die Programm- oder HDMI-Quelle.",
-          "Schalte den Fernseher aus und wieder ein."
+          "Stelle sicher, dass der Ton nicht stumm ist (Mute aus) und erhöhe die Lautstärke deutlich.",
+          "Prüfe, ob Bluetooth-Kopfhörer, Soundbar oder externe Lautsprecher verbunden sind (ggf. trennen).",
+          "Öffne die TV-Toneinstellungen und wähle als Ausgabe „TV-Lautsprecher“ (falls vorhanden).",
+          "Wechsle kurz die Quelle (z. B. TV ↔ HDMI) oder schalte kurz auf einen anderen Sender, um die Tonquelle zu testen.",
+          "Ziehe HDMI-/Audiokabel einmal ab und stecke sie wieder fest ein (lockere Kabel sind häufige Ursache).",
+          "Starte den Fernseher neu (aus, 30 Sekunden vom Strom trennen, wieder an)."
         ]
       },
       "Kein Bild / Schwarzer Bildschirm": {
         "difficulty": "leicht",
         "steps": [
-          "Stelle sicher, dass der Fernseher eingeschaltet ist.",
-          "Drücke die Taste 'Source' oder 'Input' und wähle die richtige Quelle.",
-          "Überprüfe, ob HDMI- oder andere Kabel richtig eingesteckt sind.",
-          "Starte angeschlossene Geräte (Receiver, Konsole) neu.",
-          "Ziehe den Fernseher kurz vom Strom und schalte ihn wieder ein."
+          "Prüfe zuerst: Ist der Fernseher wirklich an (Standby-Licht, Ton vorhanden, reagiert auf Tasten)?",
+          "Drücke „Source/Input“ und wähle die richtige Quelle (z. B. HDMI 1 statt HDMI 2).",
+          "Stecke das HDMI-Kabel am TV und am Gerät (Receiver/Konsole) einmal neu ein und teste ggf. einen anderen HDMI-Port.",
+          "Starte das angeschlossene Gerät neu (Receiver/Apple TV/Konsole) und warte 1–2 Minuten.",
+          "Teste kurz ein anderes Gerät oder ein anderes HDMI-Kabel (um Kabel/Port auszuschließen).",
+          "Ziehe den TV für 30 Sekunden vom Strom und starte ihn neu. Wenn weiterhin dauerhaft schwarz: mögliches Panel-/Backlight-Problem → Service."
         ]
       },
       "Fernbedienung funktioniert nicht": {
         "difficulty": "leicht",
         "steps": [
-          "Wechsle die Batterien der Fernbedienung.",
-          "Richte die Fernbedienung direkt auf den Fernseher.",
-          "Stelle sicher, dass nichts den Sensor verdeckt.",
-          "Teste die Tasten direkt am Fernseher.",
-          "Versuche, die Fernbedienung neu zu verbinden."
+          "Wechsle die Batterien (am besten neue, gleiche Sorte) und achte auf die richtige Polarität (+/–).",
+          "Teste aus kurzer Entfernung und richte die Fernbedienung direkt auf den TV-Sensor (nichts davor stellen).",
+          "Prüfe, ob der TV grundsätzlich reagiert, indem du die Tasten am Gerät selbst benutzt (Power/Volume).",
+          "Wenn der TV per Gerätetaste geht: Fernbedienung prüfen (Tasten klemmen? Batterieklappe sitzt?) und erneut testen.",
+          "Bei Smart-/Bluetooth-Fernbedienungen: TV neu starten (30 Sekunden vom Strom) und die Fernbedienung erneut koppeln/verbinden.",
+          "Wenn weiterhin keine Reaktion: ersatzweise Universalfernbedienung oder Hersteller-Ersatz in Betracht ziehen."
         ]
       },
       "WLAN funktioniert nicht": {
         "difficulty": "mittel",
         "steps": [
-          "Öffne die Netzwerkeinstellungen am Fernseher.",
-          "Überprüfe, ob dein WLAN-Netzwerk angezeigt wird.",
-          "Starte deinen Router neu.",
-          "Überprüfe, ob das WLAN-Passwort korrekt ist.",
-          "Verringere den Abstand zwischen Fernseher und Router.",
-          "Setze die Netzwerkeinstellungen zurück, falls nötig."
+          "Prüfe, ob andere Geräte (Handy/Laptop) im gleichen WLAN online sind (so erkennst du, ob der Router das Problem ist).",
+          "Öffne am TV die Netzwerkeinstellungen und stelle sicher, dass WLAN aktiviert ist und dein Netzwerk angezeigt wird.",
+          "Verbinde dich neu: WLAN am TV „vergessen“/trennen und das Passwort erneut eingeben (Tippfehler passieren häufig).",
+          "Starte den Router neu (30 Sekunden vom Strom) und warte, bis das WLAN wieder komplett da ist (2–5 Minuten).",
+          "Stelle den Fernseher näher an den Router oder teste vorübergehend ein LAN-Kabel (um Empfangsprobleme auszuschließen).",
+          "Wenn es weiter nicht klappt: Netzwerkeinstellungen am TV zurücksetzen und danach erneut verbinden."
         ]
       }
     },
@@ -59,28 +62,31 @@
         "system": "Tizen",
         "overrides": {
           "Geht nicht an": [
-            "Halte die Power-Taste am Fernseher 5 Sekunden gedrückt.",
-            "Ziehe den Netzstecker für 10 Sekunden und stecke ihn wieder ein.",
-            "Überprüfe, ob ein Software-Update verfügbar ist."
+            "Ziehe den Fernseher für 30 Sekunden vom Strom und stecke ihn wieder ein (Soft-Reset).",
+            "Halte die Power-Taste am Fernseher (oder an der Fernbedienung) ca. 5 Sekunden gedrückt, um einen Neustart zu erzwingen.",
+            "Wenn ein Standby-Licht da ist, aber nichts passiert: teste das Einschalten am Knopf direkt am TV.",
+            "Prüfe im Menü später, ob ein Software-Update verfügbar ist (falls der TV wieder startet)."
           ],
           "Kein Ton": [
-            "Stelle den Ton auf 'TV-Lautsprecher' um.",
-            "Überprüfe die Audio-Ausgabe in den Einstellungen."
+            "Öffne Einstellungen → Ton → Tonausgabe und stelle auf „TV-Lautsprecher“ um.",
+            "Prüfe unter Ton → Experteneinstellungen, ob die Audio-Ausgabe korrekt ist (z. B. PCM statt Bitstream testen).",
+            "Wenn eine Soundbar genutzt wird: kurz trennen und testen, ob über TV-Lautsprecher Ton kommt."
           ],
           "Kein Bild / Schwarzer Bildschirm": [
-            "Ziehe das HDMI-Kabel ab und stecke es erneut ein.",
-            "Setze den Bildmodus auf 'Standard' zurück.",
-            "Überprüfe Software-Updates."
+            "Wähle die Quelle neu (Source) und teste einen anderen HDMI-Port.",
+            "Ziehe HDMI-Kabel ab, stecke es fest wieder ein und teste wenn möglich ein anderes Kabel.",
+            "Starte TV und angeschlossenes Gerät komplett neu (beide 30 Sekunden vom Strom).",
+            "Wenn später möglich: Software-Updates prüfen."
           ],
           "Fernbedienung funktioniert nicht": [
-            "Wechsle die Batterien der Fernbedienung.",
-            "Starte den Fernseher neu.",
-            "Verbinde die Fernbedienung erneut mit dem Fernseher."
+            "Wechsle die Batterien und teste aus kurzer Distanz.",
+            "Starte den TV neu (30 Sekunden vom Strom).",
+            "Kopple die Fernbedienung erneut (bei Smart Remote – je nach Modell z. B. Zurück + Play/Pause einige Sekunden halten)."
           ],
           "WLAN funktioniert nicht": [
-            "Verbinde das WLAN neu.",
-            "Starte den Router neu.",
-            "Überprüfe Software-Updates."
+            "Trenne die WLAN-Verbindung am TV und verbinde dich neu (Passwort neu eingeben).",
+            "Starte den Router neu und warte 2–5 Minuten.",
+            "Wenn möglich: Software-Updates prüfen, sobald die Verbindung wieder funktioniert."
           ]
         }
       },
@@ -88,19 +94,20 @@
         "system": "webOS",
         "overrides": {
           "Geht nicht an": [
-            "Wechsle die Batterien der Magic Remote.",
-            "Halte die Power-Taste 5 Sekunden gedrückt.",
-            "Ziehe den Netzstecker kurz und stecke ihn wieder ein."
+            "Ziehe den Fernseher für 30 Sekunden vom Strom und stecke ihn wieder ein (Soft-Reset).",
+            "Halte die Power-Taste am Gerät ca. 5 Sekunden gedrückt (wenn vorhanden), um einen Neustart zu erzwingen.",
+            "Teste das Einschalten am Knopf direkt am TV (nicht nur per Magic Remote).",
+            "Wenn nur die Magic Remote nicht geht: Batterien wechseln und später neu koppeln."
           ],
           "Kein Ton": [
-            "Stelle den Ton auf 'TV-Lautsprecher' um.",
-            "Überprüfe den Soundmodus.",
-            "Kontrolliere alle Audiokabel."
+            "Stelle in den Toneinstellungen die Ausgabe auf „TV-Lautsprecher“ um.",
+            "Prüfe den Soundmodus (z. B. Standard) und deaktiviere testweise spezielle Klangfunktionen.",
+            "Wenn externe Geräte angeschlossen sind: Kabel kurz abziehen und wieder fest einstecken."
           ],
           "Kein Bild / Schwarzer Bildschirm": [
-            "Wechsle die Eingangsquelle (HDMI/TV).",
-            "Starte den Fernseher neu.",
-            "Überprüfe Software-Updates."
+            "Wechsle die Eingangsquelle und prüfe den richtigen HDMI-Port.",
+            "Stecke HDMI-Kabel neu ein und teste wenn möglich ein anderes Kabel oder Gerät.",
+            "Starte den TV komplett neu (30 Sekunden vom Strom) und teste erneut."
           ]
         }
       },
@@ -108,14 +115,15 @@
         "system": "Android TV",
         "overrides": {
           "Geht nicht an": [
-            "Halte die Power-Taste 10 Sekunden gedrückt.",
-            "Ziehe den Netzstecker kurz und stecke ihn wieder ein.",
-            "Überprüfe Software-Updates."
+            "Halte die Power-Taste an der Fernbedienung oder am TV ca. 10 Sekunden gedrückt (erzwungener Neustart).",
+            "Ziehe den Fernseher 30 Sekunden vom Strom und starte neu.",
+            "Teste das Einschalten am Knopf direkt am Gerät.",
+            "Wenn der TV wieder läuft: Software-Updates prüfen."
           ],
           "WLAN funktioniert nicht": [
-            "Verbinde das WLAN neu.",
-            "Starte den Router neu.",
-            "Überprüfe Software-Updates."
+            "Trenne das WLAN in den Einstellungen und verbinde dich neu (Passwort erneut eingeben).",
+            "Starte den Router neu und warte, bis das WLAN wieder stabil ist (2–5 Minuten).",
+            "Wenn möglich: Software-Updates prüfen, sobald eine Verbindung besteht."
           ]
         }
       },
@@ -123,8 +131,9 @@
         "system": "Android TV",
         "overrides": {
           "Geht nicht an": [
-            "Halte die Power-Taste einige Sekunden gedrückt.",
-            "Ziehe den Netzstecker kurz und stecke ihn wieder ein."
+            "Ziehe den Fernseher 30 Sekunden vom Strom und stecke ihn wieder ein (Soft-Reset).",
+            "Halte die Power-Taste am Gerät einige Sekunden gedrückt, um einen Neustart zu erzwingen (falls vorhanden).",
+            "Teste das Einschalten am Knopf direkt am Fernseher."
           ]
         }
       },
@@ -132,8 +141,9 @@
         "system": "Roku / Google TV",
         "overrides": {
           "Geht nicht an": [
-            "Ziehe den Netzstecker und stecke ihn wieder ein.",
-            "Starte den Fernseher neu."
+            "Ziehe den Fernseher 30 Sekunden vom Strom und stecke ihn wieder ein (Soft-Reset).",
+            "Teste das Einschalten am Knopf direkt am Gerät.",
+            "Wenn möglich: nutze testweise eine andere Steckdose oder stecke den TV ohne Steckdosenleiste direkt ein."
           ]
         }
       },
@@ -141,8 +151,9 @@
         "system": "VIDAA",
         "overrides": {
           "Geht nicht an": [
-            "Halte die Power-Taste 5 Sekunden gedrückt.",
-            "Ziehe den Netzstecker kurz und stecke ihn wieder ein."
+            "Ziehe den Fernseher 30 Sekunden vom Strom und stecke ihn wieder ein (Soft-Reset).",
+            "Halte die Power-Taste am TV ca. 5 Sekunden gedrückt (Neustart erzwingen).",
+            "Teste eine andere Steckdose bzw. stecke den TV direkt in die Wandsteckdose."
           ]
         }
       },
@@ -157,47 +168,56 @@
       "PC startet nicht": {
         "difficulty": "mittel",
         "steps": [
-          "Überprüfe, ob der PC am Strom angeschlossen ist.",
-          "Kontrolliere das Netzkabel oder Ladegerät.",
-          "Drücke den Einschaltknopf für 10 Sekunden.",
-          "Trenne alle angeschlossenen Geräte (USB, Maus, Drucker).",
-          "Wenn nichts passiert, könnte ein Defekt vorliegen."
+          "Prüfe Strom: Stecker/Netzteil fest eingesteckt, Steckdose/Leiste eingeschaltet.",
+          "Wenn Laptop: teste ein anderes Ladegerät oder einen anderen Stromanschluss; lade 10–15 Minuten und versuche dann zu starten.",
+          "Trenne alle USB-Geräte (Stick, Drucker, Dockingstation), damit nichts den Start blockiert.",
+          "Führe einen „Power-Reset“ durch: Gerät aus, Netzteil ab, Power-Taste 10–15 Sekunden gedrückt halten, dann wieder anschließen und starten.",
+          "Wenn es ein PC ist: kontrolliere (falls möglich) ob am Netzteil ein Schalter (0/1) vorhanden ist und auf „1“ steht.",
+          "Wenn weiterhin keinerlei Reaktion (keine LEDs/Lüfter): mögliches Netzteil-/Hardwareproblem → Service/Technik prüfen lassen."
         ]
       },
       "Kein Internet": {
         "difficulty": "leicht",
         "steps": [
-          "Überprüfe, ob das Netzwerkkabel angeschlossen ist.",
-          "Starte den Router neu.",
-          "Prüfe, ob der Flugmodus aktiviert ist.",
-          "Starte den PC neu."
+          "Prüfe, ob das Internet grundsätzlich funktioniert: geht es am Handy im gleichen WLAN?",
+          "Wenn LAN-Kabel: Kabel fest einstecken und wenn möglich anderes Kabel/anderen Port am Router testen.",
+          "Wenn WLAN: Flugmodus ausschalten und WLAN einschalten; ggf. kurz WLAN aus/an.",
+          "Starte den Router neu (30 Sekunden vom Strom, dann 2–5 Minuten warten).",
+          "Starte den PC neu.",
+          "Wenn es nur am PC nicht geht: Netzwerkverbindung „trennen/verbinden“ und ggf. das WLAN-Passwort neu eingeben."
         ]
       },
       "Langsam / Hängt sich auf": {
         "difficulty": "mittel",
         "steps": [
-          "Schließe alle unnötigen Programme.",
-          "Starte den PC neu.",
-          "Überprüfe den freien Speicherplatz auf der Festplatte.",
-          "Führe einen Virenscan aus."
+          "Schließe unnötige Programme und Browser-Tabs (oft sind es zu viele offene Apps).",
+          "Starte den PC neu (ein Neustart löst viele Hänger).",
+          "Prüfe den freien Speicherplatz: wenn die Systemplatte fast voll ist, lösche große Dateien oder räume Downloads auf.",
+          "Deinstalliere Programme, die du nicht nutzt, und schalte Autostart-Programme aus (vereinfacht: weniger startet beim Hochfahren).",
+          "Führe einen Viren-/Malware-Scan durch (Windows Defender o.ä.).",
+          "Wenn es dauerhaft langsam bleibt: Updates installieren und prüfen, ob eine SSD oder mehr Arbeitsspeicher nötig ist."
         ]
       },
       "Drucker funktioniert nicht": {
         "difficulty": "leicht",
         "steps": [
-          "Überprüfe, ob der Drucker eingeschaltet ist.",
-          "Kontrolliere das Kabel oder die Verbindung zum PC.",
-          "Stelle sicher, dass der richtige Drucker ausgewählt ist.",
-          "Starte den Drucker neu."
+          "Prüfe, ob der Drucker eingeschaltet ist und keine Fehlermeldung/rote Lampe zeigt.",
+          "Kontrolliere die Verbindung: USB-Kabel fest oder im WLAN das richtige Netzwerk (Drucker und PC im gleichen WLAN).",
+          "Wähle im Druckdialog den richtigen Drucker aus (nicht „Microsoft Print to PDF“ o.ä.).",
+          "Starte den Drucker neu (aus, 10 Sekunden warten, wieder an).",
+          "Starte den PC neu oder trenne/verbinde den Drucker erneut.",
+          "Wenn weiterhin nichts geht: Drucker entfernen und neu hinzufügen (Windows/Mac Druckereinstellungen)."
         ]
       },
       "Software lässt sich nicht installieren": {
         "difficulty": "leicht",
         "steps": [
-          "Prüfe, ob genügend Speicherplatz vorhanden ist.",
-          "Schließe andere Programme.",
-          "Starte den PC neu und versuche es erneut.",
-          "Überprüfe, ob Administratorrechte erforderlich sind."
+          "Prüfe den freien Speicherplatz (zu wenig Platz ist eine sehr häufige Ursache).",
+          "Schließe andere Programme (besonders Installer/Updater oder sehr viele Browser-Tabs).",
+          "Starte den PC neu und versuche die Installation erneut.",
+          "Lade die Installationsdatei erneut von der offiziellen Quelle (defekte Downloads passieren).",
+          "Starte die Installation mit Administratorrechten (Rechtsklick → „Als Administrator ausführen“), falls möglich.",
+          "Wenn es immer noch scheitert: prüfe, ob deine Windows/Mac-Version unterstützt wird oder ob Sicherheitssoftware blockiert."
         ]
       }
     },
@@ -212,46 +232,55 @@
       "Akku lädt nicht": {
         "difficulty": "leicht",
         "steps": [
-          "Überprüfe, ob das Ladekabel richtig eingesteckt ist.",
-          "Teste ein anderes Kabel oder Ladegerät.",
-          "Reinige vorsichtig den Ladeanschluss.",
-          "Starte das Smartphone neu.",
-          "Wenn das Problem bleibt, könnte der Akku defekt sein."
+          "Prüfe zuerst Kabel und Netzteil: stecken beide fest und ist die Steckdose in Ordnung?",
+          "Teste ein anderes Kabel und/oder ein anderes Ladegerät (häufig ist das Zubehör die Ursache).",
+          "Reinige den Ladeanschluss vorsichtig (z. B. mit Holz/Zahnstocher, kein Metall; Staub/Flusen sind oft das Problem).",
+          "Starte das Smartphone neu und teste das Laden erneut.",
+          "Teste, ob es am PC/USB-Port lädt oder ob „Schnellladen“/anderes Netzteil nötig ist.",
+          "Wenn es weiterhin nicht lädt (wackelt/überhitzt/gar keine Reaktion): Anschluss oder Akku könnte defekt sein → Reparatur prüfen lassen."
         ]
       },
       "Kein Netz / Empfang": {
         "difficulty": "leicht",
         "steps": [
-          "Überprüfe, ob der Flugmodus deaktiviert ist.",
+          "Schalte den Flugmodus kurz ein und wieder aus (das startet die Funkverbindung neu).",
           "Starte das Smartphone neu.",
-          "Überprüfe die SIM-Karte.",
-          "Gehe in die Netzwerkeinstellungen und wähle manuell einen Netzbetreiber."
+          "Prüfe die SIM-Karte: einmal herausnehmen und wieder einsetzen (falls möglich).",
+          "Teste an einem anderen Ort kurz, ob es dort Empfang gibt (manchmal ist es nur die Umgebung).",
+          "Öffne die Netzwerkeinstellungen und wähle den Anbieter automatisch/manuell neu.",
+          "Wenn weiterhin kein Netz: SIM in anderem Handy testen oder Provider-Störung prüfen."
         ]
       },
       "Langsam / Hängt sich auf": {
         "difficulty": "leicht",
         "steps": [
-          "Schließe alle offenen Apps.",
+          "Schließe alle offenen Apps (App-Wechsler öffnen und Apps beenden).",
           "Starte das Smartphone neu.",
-          "Überprüfe den Speicherplatz.",
-          "Leere den Cache der Apps, die Probleme machen."
+          "Prüfe den Speicherplatz: wenn fast voll, lösche große Dateien/alte Fotos/Videos oder Apps.",
+          "Installiere System- und App-Updates (Updates beheben oft Performance-Probleme).",
+          "Leere den Cache der betroffenen Apps (Android) bzw. installiere die App neu (iOS/Android).",
+          "Wenn es dauerhaft langsam ist: Backup machen und als letzten Schritt „Auf Werkseinstellungen“ zurücksetzen."
         ]
       },
       "App stürzt ab": {
         "difficulty": "leicht",
         "steps": [
-          "Schließe die App komplett.",
+          "Schließe die App komplett (nicht nur minimieren) und starte sie neu.",
           "Starte das Smartphone neu.",
-          "Lösche den Cache der App oder installiere sie neu."
+          "Prüfe im App Store/Play Store, ob ein Update für die App verfügbar ist.",
+          "Leere den App-Cache (Android) oder installiere die App neu (iOS/Android).",
+          "Wenn es nur bei einer bestimmten Aktion passiert: Berechtigungen prüfen (Kamera, Speicher, Standort)."
         ]
       },
       "WLAN verbindet nicht": {
         "difficulty": "mittel",
         "steps": [
-          "Schalte WLAN aus und wieder ein.",
-          "Starte den Router neu.",
-          "Überprüfe das Passwort.",
-          "Setze ggf. die Netzwerkeinstellungen zurück."
+          "Prüfe, ob das WLAN generell funktioniert (geht es mit einem anderen Gerät im gleichen Netz?).",
+          "Schalte WLAN am Handy aus und wieder ein; alternativ Flugmodus kurz an/aus.",
+          "Wähle das WLAN aus → „Netzwerk vergessen“ und verbinde dich neu (Passwort erneut eingeben).",
+          "Starte den Router neu (30 Sekunden vom Strom, dann 2–5 Minuten warten).",
+          "Starte das Smartphone neu.",
+          "Wenn es immer noch nicht geht: Netzwerkeinstellungen am Handy zurücksetzen (Achtung: WLAN-Passwörter gehen verloren)."
         ]
       }
     },

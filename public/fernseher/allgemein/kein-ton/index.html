@@ -3,120 +3,114 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Fernseher: Kein Ton – Schritt-für-Schritt</title>
-  <meta name="description" content="Einfache Schritt-für-Schritt Anleitung: Kein Ton (Fernseher)." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>
+    
+      {{ guide.title }} | Teklio
+    
+  </title>
+
+  
+    <meta name="description" content="{{ guide.description }}" />
+  
+
+  
+    <link rel="canonical" href="https://teklio.de{{ guide.url }}" />
+  
+
+  <meta property="og:site_name" content="Teklio" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="{{ guide.title }} | Teklio" />
+  <meta property="og:description" content="{{ guide.description }}" />
+
   <link rel="stylesheet" href="/assets/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
-  <header>
-    <a href="/">Teklio</a>
-    <p>Schritt-für-Schritt Hilfe</p>
+  <a class="skip-link" href="#content">Zum Inhalt springen</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/">Teklio</a>
+      <nav class="site-nav" aria-label="Hauptnavigation">
+        <a href="/assistent/">Assistent</a>
+        <a href="/">Suche</a>
+      </nav>
+    </div>
+    <div class="theme-menu" aria-label="Theme">
+  <button class="theme-btn" type="button" id="themeBtn" aria-haspopup="true" aria-expanded="false">
+    <span class="theme-icon" aria-hidden="true">🌓</span>
+    <span class="theme-label">Theme</span>
+  </button>
+
+  <div class="theme-popover" id="themePopover" role="menu" aria-label="Theme auswählen">
+    <button type="button" class="theme-option" data-theme-choice="system" role="menuitem">System</button>
+    <button type="button" class="theme-option" data-theme-choice="light" role="menuitem">Hell</button>
+    <button type="button" class="theme-option" data-theme-choice="dark" role="menuitem">Dunkel</button>
+  </div>
+  </div>
+
   </header>
 
-  <main class="cards-container">
-    <div class="card">
-      <h1>Fernseher: Kein Ton – Schritt-für-Schritt</h1>
-
-      <p>
-        <strong>Gerät:</strong> Fernseher<br>
-        <strong>Variante:</strong> Allgemein
-        
-        <br><strong>Schwierigkeit:</strong> leicht
-      </p>
-
-      <h2>So lösen Sie es</h2>
+  
+  
+    <nav class="breadcrumbs wrap" aria-label="Breadcrumb">
       <ol>
-        
-          <li>Erhöhe die Lautstärke am Fernseher.</li>
-        
-          <li>Stelle sicher, dass der Ton nicht stummgeschaltet ist.</li>
-        
-          <li>Überprüfe, ob Kopfhörer oder externe Lautsprecher angeschlossen sind.</li>
-        
-          <li>Wechsle kurz die Programm- oder HDMI-Quelle.</li>
-        
-          <li>Schalte den Fernseher aus und wieder ein.</li>
-        
+        <li><a href="/">Start</a></li>
+        <li><a href="/fernseher/">Fernseher</a></li>
+        <li><a href="/fernseher/allgemein/">Allgemein</a></li>
+        <li><a href="/fernseher/allgemein/kein-ton/">Kein Ton</a></li>
       </ol>
-      
-      
-      
+    </nav>
+  
 
-      <hr style="margin: 24px 0;" />
+  <main id="content" class="wrap">
+    
+<h1>Fernseher: Kein Ton – Schritt-für-Schritt</h1>
 
-      <h2>Weitere Hilfe</h2>
+<div class="guide-meta">
+  <span class="badge">🧩 Schwierigkeit: leicht</span>
+  
+</div>
 
-      <p>
-      <a href="/fernseher/">Zur Fernseher-Übersicht</a>
-      ·
-      <a href="/fernseher/allgemein/">Zur Übersicht für Allgemein</a>
-      </p>
+<div class="guide-steps">
+  <h2>So lösen Sie es</h2>
+  <ol>
+    
+      <li>Stelle sicher, dass der Ton nicht stumm ist (Mute aus) und erhöhe die Lautstärke deutlich.</li>
+    
+      <li>Prüfe, ob Bluetooth-Kopfhörer, Soundbar oder externe Lautsprecher verbunden sind (ggf. trennen).</li>
+    
+      <li>Öffne die TV-Toneinstellungen und wähle als Ausgabe „TV-Lautsprecher“ (falls vorhanden).</li>
+    
+      <li>Wechsle kurz die Quelle (z. B. TV ↔ HDMI) oder schalte kurz auf einen anderen Sender, um die Tonquelle zu testen.</li>
+    
+      <li>Ziehe HDMI-/Audiokabel einmal ab und stecke sie wieder fest ein (lockere Kabel sind häufige Ursache).</li>
+    
+      <li>Starte den Fernseher neu (aus, 30 Sekunden vom Strom trennen, wieder an).</li>
+    
+  </ol>
 
-      <h3>Weitere Probleme für Allgemein Fernseher</h3>
-      <ul>
-      
-        
-        <li><a href="/fernseher/allgemein/geht-nicht-an/">Geht nicht an</a></li>
-        
-      
-        
-      
-        
-        <li><a href="/fernseher/allgemein/kein-bild-schwarzer-bildschirm/">Kein Bild / Schwarzer Bildschirm</a></li>
-        
-      
-        
-        <li><a href="/fernseher/allgemein/fernbedienung-funktioniert-nicht/">Fernbedienung funktioniert nicht</a></li>
-        
-      
-        
-        <li><a href="/fernseher/allgemein/wlan-funktioniert-nicht/">WLAN funktioniert nicht</a></li>
-        
-      
-      </ul>
+  <p style="margin-top:16px;">
+    <a href="/assistent/">Zum Assistenten</a>
+  </p>
+</div>
 
-      <h3>Kein Ton für andere Marken</h3>
-      <ul>
-      
-        
-      
-        
-        <li><a href="/fernseher/samsung/kein-ton/">Samsung</a></li>
-        
-      
-        
-        <li><a href="/fernseher/lg/kein-ton/">LG</a></li>
-        
-      
-        
-        <li><a href="/fernseher/sony/kein-ton/">Sony</a></li>
-        
-      
-        
-        <li><a href="/fernseher/philips/kein-ton/">Philips</a></li>
-        
-      
-        
-        <li><a href="/fernseher/tcl/kein-ton/">TCL</a></li>
-        
-      
-        
-        <li><a href="/fernseher/hisense/kein-ton/">Hisense</a></li>
-        
-      
-        
-        <li><a href="/fernseher/andere-marke/kein-ton/">Andere Marke</a></li>
-        
-      
-      </ul>
 
-      <p style="margin-top: 16px;">
-        <a href="/assistent/">Zum Assistenten</a>
-      </p>
-    </div>
   </main>
 
-  <script src="/assets/script.js"></script>
+  <footer class="site-footer">
+    <div class="wrap">
+      <small>
+        © 2026 Teklio ·
+        <a href="/impressum/">Impressum</a> ·
+        <a href="/datenschutz/">Datenschutz</a>
+      </small>
+    </div>
+  </footer>
+  <script src="/assets/script.js" defer></script>
+
 </body>
 </html>

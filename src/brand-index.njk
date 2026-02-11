@@ -1,45 +1,32 @@
 ---
+layout: layouts/base.njk
 pagination:
   data: brandIndexPages
   size: 1
-  alias: b
-permalink: "{{ b.url }}index.html"
+  alias: brand
+permalink: "{{ brand.url }}index.html"
+title: "{{ brand.deviceName }} – {{ brand.brandName }}"
+description: "Anleitungen für {{ brand.deviceName }} ({{ brand.brandName }}) – Schritt für Schritt, einfach erklärt."
+canonical: "https://teklio.de{{ brand.url }}"
+breadcrumbs:
+  - { name: "Start", url: "/" }
+  - { name: "{{ brand.deviceName }}", url: "/{{ brand.deviceSlug }}/" }
+  - { name: "{{ brand.brandName }}", url: "{{ brand.url }}" }
 ---
 
-<!doctype html>
-<html lang="de">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>{{ b.deviceName }} – {{ b.brandName }} | Teklio</title>
-  <meta name="description" content="Alle Anleitungen für {{ b.brandName }} {{ b.deviceName }}." />
-  <link rel="stylesheet" href="/assets/style.css" />
-</head>
-<body>
-  <header>
-    <a href="/">Teklio</a>
-    <p><a href="/{{ b.deviceSlug }}/">{{ b.deviceName }}</a> → {{ b.brandName }}</p>
-  </header>
+<h1>{{ brand.brandName }} – {{ brand.deviceName }}</h1>
 
-  <main class="cards-container">
-    <div class="card">
-      <h1>{{ b.brandName }} – {{ b.deviceName }}</h1>
+{% if brand.system %}
+  <p><strong>System:</strong> {{ brand.system }}</p>
+{% endif %}
 
-      {% if b.system %}
-        <p><strong>System:</strong> {{ b.system }}</p>
-      {% endif %}
+<h2>Probleme</h2>
+<ul>
+  {% for i in brand.issues %}
+    <li><a href="{{ i.url }}">{{ i.issueName }}</a></li>
+  {% endfor %}
+</ul>
 
-      <h2>Probleme</h2>
-      <ul>
-        {% for i in b.issues %}
-          <li><a href="{{ i.url }}">{{ i.issueName }}</a></li>
-        {% endfor %}
-      </ul>
-
-      <p style="margin-top: 16px;">
-        <a href="/assistent/">Zum Assistenten</a>
-      </p>
-    </div>
-  </main>
-</body>
-</html>
+<p style="margin-top: 16px;">
+  <a href="/assistent/">Zum Assistenten</a>
+</p>
