@@ -1,67 +1,84 @@
 ---
 layout: layouts/base.njk
 title: "Assistent"
-description: "Wähle Gerät, Marke/System und Problem – und erhalte eine einfache Schritt-für-Schritt Anleitung."
+description: "Interaktiver Problemlösungs-Assistent für Technikprobleme."
 permalink: "/assistent/index.html"
-breadcrumbs:
-  - { name: "Start", url: "/" }
-  - { name: "Assistent", url: "/assistent/" }
 ---
 
 <header class="assistant-hero">
-  Teklio – Dein Gerätehilfe-Assistent
-  <p>Wähle dein Gerät und Problem aus, um eine Schritt-für-Schritt-Anleitung zu erhalten.</p>
+  Teklio Assistent
+  <p>Wähle dein Gerät und finde das passende Problem – Schritt für Schritt zur Lösung.</p>
 </header>
 
-<main>
-  <section class="controls">
-    <div class="form-group">
-      <label for="geraetSelect">Gerät auswählen:</label>
-      <select id="geraetSelect">
-        <option value="">--Bitte wählen--</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="markeSelect">Marke / Betriebssystem auswählen:</label>
-      <select id="markeSelect" disabled>
-        <option value="">--Bitte wählen--</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="problemSelect">Problem auswählen:</label>
-      <select id="problemSelect" disabled>
-        <option value="">--Bitte wählen--</option>
-      </select>
-    </div>
-  </section>
-
-  <section id="anleitung" class="cards-container"></section>
-
-  <div id="stepNav">
-    <button id="prevStep" disabled hidden>Zurück</button>
-    <span id="stepCounter" hidden>Schritt 1 / 5</span>
-    <button id="nextStep" disabled hidden>Weiter</button>
+<section class="controls">
+  <div class="form-group">
+    <label for="geraetSelect">Gerät auswählen:</label>
+    <select id="geraetSelect">
+      <option value="">--Bitte wählen--</option>
+    </select>
   </div>
 
-  <div id="helpFeedback" style="display:none; text-align:center; margin-top:20px;">
-    <p style="font-weight:600;">Hat dieser Schritt geholfen?</p>
-    <button id="helpYes">Ja ✅</button>
-    <button id="helpNo">Nein ➡️</button>
+  <div class="form-group">
+    <label for="markeSelect">Marke / Betriebssystem (optional):</label>
+    <select id="markeSelect" disabled>
+      <option value="Allgemein">Allgemein</option>
+    </select>
   </div>
 
-  <div id="progressWrap">
-    <div id="progressBar"></div>
-  </div>
-</main>
+  <div class="form-group">
+    <label for="problemSelect">Problem auswählen:</label>
+    <select id="problemSelect" disabled>
+      <option value="">--Bitte wählen--</option>
+    </select>
 
-<button id="feedbackBtn"><i class="fas fa-comment-dots"></i> Feedback / Hilfe</button>
-<div id="feedbackForm">
-  <h3>Feedback / Hilfe</h3>
-  <input type="text" id="name" placeholder="Dein Name">
-  <textarea id="message" rows="4" placeholder="Deine Nachricht"></textarea>
-  <button id="sendFeedback">Senden</button>
+    <button class="problem-more" id="showProblemFinder" type="button" disabled>
+      Ich finde mein Problem nicht
+    </button>
+
+    <div class="problem-finder" id="problemFinderWrap" style="display:none;">
+      <label for="problemFinder">Oder kurz beschreiben:</label>
+      <input
+        id="problemFinder"
+        type="text"
+        placeholder="z.B. kein ton, wlan, geht nicht an …"
+        autocomplete="off"
+        disabled
+      />
+      <ul id="problemSuggestions" style="display:none;"></ul>
+
+      <small style="display:block; margin-top:8px; color: var(--muted);">
+        Tipp: Du kannst auch nur ein Stichwort eingeben (z.B. „wlan“ oder „ton“).
+      </small>
+    </div>
+  </div>
+</section>
+
+<div id="progressWrap">
+  <div id="progressBar"></div>
 </div>
 
-<script src="/assets/script.js"></script>
+<div class="cards-container" id="anleitung"></div>
+
+<div id="stepNav" style="display:none;">
+  <button id="prevStep" type="button">Zurück</button>
+  <span id="stepCounter"></span>
+  <button id="nextStep" type="button">Weiter</button>
+</div>
+
+<div id="helpFeedback" style="display:none; text-align:center;">
+  <p style="color: var(--muted); font-weight: 700;">Hat es geholfen?</p>
+  <button id="helpYes" type="button">Ja</button>
+  <button id="helpNo" type="button">Nein</button>
+</div>
+
+<button id="feedbackBtn" type="button">Feedback</button>
+
+<div id="feedbackForm">
+  <label for="name">Name</label>
+  <input id="name" type="text" placeholder="Dein Name" />
+
+  <label for="message">Nachricht</label>
+  <textarea id="message" rows="4" placeholder="Was können wir verbessern?"></textarea>
+
+  <button id="sendFeedback" type="button">Senden</button>
+</div>

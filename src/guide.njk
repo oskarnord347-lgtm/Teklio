@@ -10,23 +10,71 @@ description: "{{ guide.description }}"
 canonical: "https://teklio.de{{ guide.url }}"
 ---
 
-<h1>{{ guide.title }}</h1>
+  <header class="guide-header">
+    {% set issue = guide.issueName %}
+    {% set device = guide.deviceName %}
 
-<div class="guide-meta">
-  {% if guide.difficulty %}<span class="badge">🧩 Schwierigkeit: {{ guide.difficulty }}</span>{% endif %}
-  {% if guide.system %}<span class="badge">💻 System: {{ guide.system }}</span>{% endif %}
-</div>
+    <h1 class="guide-title">
+      {% if issue.startsWith("Kein") or issue.startsWith("Keine") %}
+        {{ issue }} beim {{ device }}
+      {% elseif issue.includes("nicht") %}
+        {{ device }} {{ issue }}
+      {% else %}
+        {{ issue }} am {{ device }}
+      {% endif %}
+    </h1>
+
+  <p class="guide-subline">
+    Verständliche Anleitung zur schnellen Problemlösung
+  </p>
+</header>
+
+{% set stepCount = guide.steps | length %}
+
+<h2 class="steps-heading">
+  <span class="steps-count">{{ stepCount }}</span>
+  Schritt{% if stepCount != 1 %}e{% endif %} zur Lösung
+</h2>
+
+
+
+{% if guide.intro %}
+  <div class="guide-intro">
+    <p>{{ guide.intro }}</p>
+  </div>
+{% endif %}
+
+{% if guide.difficulty or guide.system %}
+  <div class="guide-meta">
+    {% if guide.difficulty %}<span class="badge">🧩 Schwierigkeit: {{ guide.difficulty }}</span>{% endif %}
+    {% if guide.system %}<span class="badge">💻 System: {{ guide.system }}</span>{% endif %}
+  </div>
+{% endif %}
 
 <div class="guide-steps">
-  <h2>So lösen Sie es</h2>
+  <h2>So behebst du das Problem</h2>
+
   <ol>
     {% for s in guide.steps %}
       <li>{{ s }}</li>
     {% endfor %}
   </ol>
-
-  <p style="margin-top:16px;">
-    <a href="/assistent/">Zum Assistenten</a>
-  </p>
 </div>
 
+{% if guide.causes and guide.causes.length %}
+  <h2>Häufige Ursachen</h2>
+  <ul>
+    {% for c in guide.causes %}
+      <li>{{ c }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+{% if guide.support %}
+  <h2>Wann solltest du den Support kontaktieren?</h2>
+  <p>{{ guide.support }}</p>
+{% endif %}
+
+<p style="margin-top:16px;">
+  <a href="/assistent/">Zum Assistenten</a>
+</p>
