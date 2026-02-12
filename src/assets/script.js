@@ -108,6 +108,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIssueName = null;
   let currentSteps = [];
   let currentStepIndex = 0;
+  let problemMeta = {};
+
 
   // ====== Elemente holen ======
   const geraetSelect = document.getElementById("geraetSelect");
@@ -491,21 +493,29 @@ function computeSuggestions(query) {
 
 
   // ======================
-  // JSON LADEN
+  // JSON LADEN (Guides + ProblemMeta)
   // ======================
-  fetch("/assets/guides.json")
-    .then((res) => res.json())
-    .then((data) => {
-      daten = data;
+  Promise.all([
+    fetch("/assets/guides.json").then((r) => r.json()),
+    fetch("/assets/problemMeta.json")
+      .then((r) => r.json())
+      .catch(() => ({})) // falls Datei noch nicht existiert
+  ])
+    .then(([guidesData, metaData]) => {
+      daten = guidesData;
+      problemMeta = metaData || {}; // nutzt die Variable von oben (KEIN neues let!)
 
+      // Geräte-Dropdown füllen
       Object.keys(daten).forEach((geraet) => {
         const opt = document.createElement("option");
         opt.value = geraet;
         opt.textContent = geraet;
         geraetSelect.appendChild(opt);
       });
-    })
-    .catch(() => {});
+  })
+  .catch(() => {
+    console.warn("Fehler beim Laden der JSON-Daten.");
+  });
 
   // ======================
   // GERÄT AUSWÄHLEN
@@ -675,4 +685,22 @@ function computeSuggestions(query) {
       if (document.getElementById("message")) document.getElementById("message").value = "";
     });
   }
+
+  /* =========================
+   GUIDE: <details>/<summary> Fix
+   (erzwingt Toggle, falls CSS/JS es blockiert)
+   ========================= */
+  document.addEventListener("click", (e) => {
+  const summary = e.target && e.target.closest ? e.target.closest("summary") : null;
+  if (!summary) return;
+
+  const details = summary.parentElement;
+  if (!details || details.tagName !== "DETAILS") return;
+
+  // Native Toggle kann durch anderes JS blockiert werden -> manuell togglen
+  details.open = !details.open;
+  e.preventDefault();
+  });
+
+
 });

@@ -1,0 +1,201 @@
+
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>
+    
+      {{ brand.deviceName }} – {{ brand.brandName }} | Teklio
+    
+  </title>
+
+  
+    <meta name="description" content="Anleitungen für {{ brand.deviceName }} ({{ brand.brandName }}) – Schritt für Schritt, einfach erklärt." />
+  
+
+  
+    <link rel="canonical" href="https://teklio.de{{ brand.url }}" />
+  
+
+  <meta property="og:site_name" content="Teklio" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="{{ brand.deviceName }} – {{ brand.brandName }} | Teklio" />
+  <meta property="og:description" content="Anleitungen für {{ brand.deviceName }} ({{ brand.brandName }}) – Schritt für Schritt, einfach erklärt." />
+
+  <link rel="stylesheet" href="/assets/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  
+  <script>
+    (function () {
+      var KEY = "teklio-theme"; // "light" | "dark" | "system"
+      var root = document.documentElement;
+      var choice = localStorage.getItem(KEY) || "system";
+      var system = "light";
+      try {
+        system = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      } catch (e) {}
+      root.setAttribute("data-theme", choice === "system" ? system : choice);
+    })();
+  </script>
+</head>
+
+<body>
+  <a class="skip-link" href="#content">Zum Inhalt springen</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/">Teklio</a>
+
+      <nav class="site-nav" aria-label="Hauptnavigation">
+        <a href="/assistent/">Assistent</a>
+        <a href="/">Suche</a>
+
+        <div class="theme-menu" aria-label="Theme">
+          <button class="theme-btn" type="button" id="themeBtn" aria-haspopup="true" aria-expanded="false">
+            <span class="theme-icon" aria-hidden="true">🌓</span>
+            <span class="theme-label">Theme</span>
+          </button>
+
+          <div class="theme-popover" id="themePopover" role="menu" aria-label="Theme auswählen">
+            <button type="button" class="theme-option" data-theme-choice="system" role="menuitem">System</button>
+            <button type="button" class="theme-option" data-theme-choice="light" role="menuitem">Hell</button>
+            <button type="button" class="theme-option" data-theme-choice="dark" role="menuitem">Dunkel</button>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  
+  
+
+  <main id="content" class="wrap">
+    
+<h1>Epson – Drucker</h1>
+
+
+
+<h2>Probleme</h2>
+<ul>
+  
+    <li><a href="/drucker/epson/druckt-nicht/">Druckt nicht</a></li>
+  
+    <li><a href="/drucker/epson/papierstau/">Papierstau</a></li>
+  
+    <li><a href="/drucker/epson/drucker-wird-nicht-erkannt/">Drucker wird nicht erkannt</a></li>
+  
+    <li><a href="/drucker/epson/streifen-im-druck-schlechte-druckqualitaet/">Streifen im Druck / Schlechte Druckqualität</a></li>
+  
+    <li><a href="/drucker/epson/patrone-toner-wird-nicht-erkannt/">Patrone / Toner wird nicht erkannt</a></li>
+  
+    <li><a href="/drucker/epson/wlan-drucker-verbindet-nicht/">WLAN-Drucker verbindet nicht</a></li>
+  
+</ul>
+
+<p style="margin-top: 16px;">
+  <a href="/assistent/">Zum Assistenten</a>
+</p>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <small>
+        © 2026 Teklio ·
+        <a href="/impressum/">Impressum</a> ·
+        <a href="/datenschutz/">Datenschutz</a>
+      </small>
+    </div>
+  </footer>
+
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var KEY = "teklio-theme";
+      var root = document.documentElement;
+
+      function getSystemTheme() {
+        try {
+          return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        } catch (e) {
+          return "light";
+        }
+      }
+
+      function apply(choice) {
+        root.setAttribute("data-theme", choice === "system" ? getSystemTheme() : choice);
+      }
+
+      var btn = document.getElementById("themeBtn");
+      var pop = document.getElementById("themePopover");
+      if (!btn || !pop) return;
+
+      var saved = localStorage.getItem(KEY) || "system";
+      apply(saved);
+
+      function setActive(choice) {
+        var opts = pop.querySelectorAll(".theme-option");
+        for (var i = 0; i < opts.length; i++) {
+          opts[i].classList.toggle("active", opts[i].getAttribute("data-theme-choice") === choice);
+        }
+      }
+      setActive(saved);
+
+      function openPop() {
+        pop.classList.add("open");
+        btn.setAttribute("aria-expanded", "true");
+      }
+      function closePop() {
+        pop.classList.remove("open");
+        btn.setAttribute("aria-expanded", "false");
+      }
+
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (pop.classList.contains("open")) closePop();
+        else openPop();
+      });
+
+      pop.addEventListener("click", function (e) {
+        var target = e.target;
+        if (!target) return;
+
+        var opt = target.closest ? target.closest(".theme-option") : null;
+        if (!opt) return;
+
+        var choice = opt.getAttribute("data-theme-choice");
+        localStorage.setItem(KEY, choice);
+        apply(choice);
+        setActive(choice);
+        closePop();
+      });
+
+      document.addEventListener("click", closePop);
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closePop();
+      });
+
+      // System-Theme-Wechsel live übernehmen, falls "system"
+      try {
+        if (window.matchMedia) {
+          var mq = window.matchMedia("(prefers-color-scheme: dark)");
+          if (mq && mq.addEventListener) {
+            mq.addEventListener("change", function () {
+              var c = localStorage.getItem(KEY) || "system";
+              if (c === "system") apply("system");
+            });
+          }
+        }
+      } catch (e) {}
+    });
+  </script>
+
+  
+  <script src="/assets/theme.js" defer></script>
+  <script src="/assets/script.js" defer></script>
+</body>
+</html>

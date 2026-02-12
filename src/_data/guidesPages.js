@@ -2,6 +2,14 @@
 const guides = require("./guides.json");
 const { getProblemCopy } = require("./problemCopy");
 
+// OPTIONAL: Step Library (falls Datei noch nicht existiert, läuft es trotzdem)
+let stepLibrary = {};
+try {
+  stepLibrary = require("./stepLibrary");
+} catch (e) {
+  stepLibrary = {};
+}
+
 function slugify(str) {
   return String(str)
     .toLowerCase()
@@ -36,26 +44,69 @@ function findGeneralProblemsKey(deviceObj) {
 function defaultIntro({ device, brand, issue, system }) {
   const brandPart = brand ? `${brand} ` : "";
   const systemPart = system ? ` (System: ${system})` : "";
-
   return `Hier findest du eine verständliche Anleitung zur Lösung des Problems „${issue}“ bei deinem ${brandPart}${device}${systemPart}. In vielen Fällen lässt sich das Problem schnell selbst beheben.`;
+}
+
+/**
+ * Steps auflösen:
+ * - string bleibt string (Altbestand)
+ * - {id} wird mit stepLibrary[id] zu { title, note, detail }
+ * - {custom:{...}} erlaubt komplett eigene Steps im JSON
+ */
+function resolveSteps(steps) {
+  if (!Array.isArray(steps)) return [];
+
+  return steps
+    .map((s) => {
+      // Alt: string
+      if (typeof s === "string") return s;
+
+      // Neu: { id, note? }
+      if (s && typeof s === "object" && s.id) {
+        const lib = stepLibrary[s.id];
+
+        if (lib && typeof lib === "object") {
+          // note aus JSON darf Library-Note überschreiben (praktisch)
+          return { id: s.id, ...lib, ...(s.note ? { note: s.note } : {}) };
+        }
+
+        // Fallback: unbekannte ID
+        return {
+          id: s.id,
+          title: s.note || s.id,
+          note: s.note || "",
+          detail: null,
+        };
+      }
+
+      // Neu: { custom: { title, note, detail } }
+      if (s && typeof s === "object" && s.custom && typeof s.custom === "object") {
+        return { ...s.custom };
+      }
+
+      return null;
+    })
+    .filter(Boolean);
 }
 
 function attachCopy(pageObj) {
   const ctx = {
     device: pageObj.deviceName,
-    brand: pageObj.brandName && pageObj.brandName !== "Allgemein" ? pageObj.brandName : "",
+    brand:
+      pageObj.brandName && pageObj.brandName !== "Allgemein"
+        ? pageObj.brandName
+        : "",
     system: pageObj.system || "",
     issue: pageObj.issueName,
   };
 
   const copy = getProblemCopy(pageObj.issueName);
 
-  if (copy?.intro) {
-    pageObj.intro =
-      typeof copy.intro === "function" ? copy.intro(ctx) : String(copy.intro);
-  } else {
-    pageObj.intro = defaultIntro(ctx);
-  }
+  pageObj.intro = copy?.intro
+    ? typeof copy.intro === "function"
+      ? copy.intro(ctx)
+      : String(copy.intro)
+    : defaultIntro(ctx);
 
   pageObj.causes = Array.isArray(copy?.causes) ? copy.causes : null;
   pageObj.support = copy?.support ? copy.support : null;
@@ -81,8 +132,11 @@ module.exports = () => {
       const issueSlug = slugify(issueName);
 
       const base = generalProblems[issueName];
-      const baseSteps = Array.isArray(base.steps) ? base.steps : [];
+      const baseStepsRaw = Array.isArray(base.steps) ? base.steps : [];
       const difficulty = base.difficulty || null;
+
+      // ✅ Base Steps (aufgelöst)
+      const baseSteps = resolveSteps(baseStepsRaw);
 
       // ✅ 1) Allgemein-Seite
       pages.push(
@@ -105,11 +159,7 @@ module.exports = () => {
           brandUrl: `/${deviceSlug}/allgemein/`,
 
           url: `/${deviceSlug}/allgemein/${issueSlug}/`,
-
-          // 🔥 NEUER CLEANER TITLE
           title: `${deviceName}: ${issueName}`,
-
-          // 🔥 SEO Description ohne Schritt-für-Schritt
           description: `Anleitung zur Lösung von „${issueName}“ bei ${deviceName}. Verständlich erklärt und einfach umsetzbar.`,
         })
       );
@@ -120,16 +170,18 @@ module.exports = () => {
 
         const brandData = brandsContainer[brandName] || {};
         const overrides = brandData.overrides || {};
-        let overrideSteps = [];
+        let overrideStepsRaw = [];
 
         for (const key of Object.keys(overrides)) {
           if (normalize(key) === normalize(issueName)) {
-            overrideSteps = Array.isArray(overrides[key]) ? overrides[key] : [];
+            overrideStepsRaw = Array.isArray(overrides[key]) ? overrides[key] : [];
             break;
           }
         }
 
+        const overrideSteps = resolveSteps(overrideStepsRaw);
         const mergedSteps = [...overrideSteps, ...baseSteps];
+
         const system = brandData.system || null;
 
         pages.push(
@@ -152,10 +204,7 @@ module.exports = () => {
             brandUrl: `/${deviceSlug}/${brandSlug}/`,
 
             url: `/${deviceSlug}/${brandSlug}/${issueSlug}/`,
-
-            // 🔥 Marken sauber eingebunden
             title: `${brandName} ${deviceName}: ${issueName}`,
-
             description: `Anleitung zur Lösung von „${issueName}“ bei ${brandName} ${deviceName}. Klar strukturiert und direkt umsetzbar.`,
           })
         );

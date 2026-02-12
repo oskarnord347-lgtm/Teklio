@@ -10,19 +10,19 @@ description: "{{ guide.description }}"
 canonical: "https://teklio.de{{ guide.url }}"
 ---
 
-  <header class="guide-header">
-    {% set issue = guide.issueName %}
-    {% set device = guide.deviceName %}
+<header class="guide-header">
+  {% set issue = guide.issueName %}
+  {% set device = guide.deviceName %}
 
-    <h1 class="guide-title">
-      {% if issue.startsWith("Kein") or issue.startsWith("Keine") %}
-        {{ issue }} beim {{ device }}
-      {% elseif issue.includes("nicht") %}
-        {{ device }} {{ issue }}
-      {% else %}
-        {{ issue }} am {{ device }}
-      {% endif %}
-    </h1>
+  <h1 class="guide-title">
+    {% if issue.startsWith("Kein") or issue.startsWith("Keine") %}
+      {{ issue }} beim {{ device }}
+    {% elseif issue.includes("nicht") %}
+      {{ device }} {{ issue }}
+    {% else %}
+      {{ issue }} am {{ device }}
+    {% endif %}
+  </h1>
 
   <p class="guide-subline">
     Verständliche Anleitung zur schnellen Problemlösung
@@ -35,8 +35,6 @@ canonical: "https://teklio.de{{ guide.url }}"
   <span class="steps-count">{{ stepCount }}</span>
   Schritt{% if stepCount != 1 %}e{% endif %} zur Lösung
 </h2>
-
-
 
 {% if guide.intro %}
   <div class="guide-intro">
@@ -56,7 +54,79 @@ canonical: "https://teklio.de{{ guide.url }}"
 
   <ol>
     {% for s in guide.steps %}
-      <li>{{ s }}</li>
+      <li>
+
+        {# ==========================
+           NEU: Step ist Objekt
+           { title, note, detail }
+           ========================== #}
+        {% if s.title %}
+
+          <strong>{{ s.title }}</strong>
+
+          {% if s.note %}
+            <p class="step-note">{{ s.note }}</p>
+          {% endif %}
+
+          {% if s.detail %}
+            <details class="step-details">
+              <summary>So geht’s</summary>
+
+              {# Windows #}
+              {% if s.detail.windows and s.detail.windows.length %}
+                <p><strong>Windows</strong></p>
+                <ol>
+                  {% for d in s.detail.windows %}
+                    <li>{{ d }}</li>
+                  {% endfor %}
+                </ol>
+              {% endif %}
+
+              {# Mac #}
+              {% if s.detail.mac and s.detail.mac.length %}
+                <p><strong>Mac</strong></p>
+                <ol>
+                  {% for d in s.detail.mac %}
+                    <li>{{ d }}</li>
+                  {% endfor %}
+                </ol>
+              {% endif %}
+
+              {# Android #}
+              {% if s.detail.android and s.detail.android.length %}
+                <p><strong>Android</strong></p>
+                <ol>
+                  {% for d in s.detail.android %}
+                    <li>{{ d }}</li>
+                  {% endfor %}
+                </ol>
+              {% endif %}
+
+              {# iOS #}
+              {% if s.detail.ios and s.detail.ios.length %}
+                <p><strong>iPhone (iOS)</strong></p>
+                <ol>
+                  {% for d in s.detail.ios %}
+                    <li>{{ d }}</li>
+                  {% endfor %}
+                </ol>
+              {% endif %}
+
+              {# Fallback: detail ist einfacher Text #}
+              {% if (not s.detail.windows and not s.detail.mac and not s.detail.android and not s.detail.ios) and s.detail %}
+                <p>{{ s.detail }}</p>
+              {% endif %}
+            </details>
+          {% endif %}
+
+        {# ==========================
+           ALT: Step ist String
+           ========================== #}
+        {% else %}
+          {{ s }}
+        {% endif %}
+
+      </li>
     {% endfor %}
   </ol>
 </div>

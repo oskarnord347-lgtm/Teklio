@@ -719,3 +719,47 @@ select:focus{
 .problem-finder{
   margin-top: 14px;
 }
+
+.step-details{
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card2);
+}
+
+.step-details summary{
+  cursor: pointer;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.step-details ol{
+  margin-top: 10px;
+  padding-left: 22px;
+}
+
+.step-note{
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* Guide Step Details */
+.step-details summary{
+  cursor: pointer;
+  user-select: none;
+  padding: 8px 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+  display: inline-block;
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+}
+
+.step-details summary:hover{
+  background: color-mix(in srgb, var(--text) 10%, transparent);
+}
+
+.step-details[open] summary{
+  background: color-mix(in srgb, var(--brand) 14%, transparent);
+}
