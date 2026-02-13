@@ -72,6 +72,16 @@ canonical: "https://teklio.de{{ guide.url }}"
             <details class="step-details">
               <summary>So geht’s</summary>
 
+              {# ✅ Allgemein (wird in deiner stepLibrary häufig genutzt) #}
+              {% if s.detail.allgemein and s.detail.allgemein.length %}
+                <p><strong>Allgemein</strong></p>
+                <ol>
+                  {% for d in s.detail.allgemein %}
+                    <li>{{ d }}</li>
+                  {% endfor %}
+                </ol>
+              {% endif %}
+
               {# Windows #}
               {% if s.detail.windows and s.detail.windows.length %}
                 <p><strong>Windows</strong></p>
@@ -112,10 +122,11 @@ canonical: "https://teklio.de{{ guide.url }}"
                 </ol>
               {% endif %}
 
-              {# Fallback: detail ist einfacher Text #}
-              {% if (not s.detail.windows and not s.detail.mac and not s.detail.android and not s.detail.ios) and s.detail %}
+              {# ✅ Fallback nur wenn detail wirklich Text ist (nie wieder [object Object]) #}
+              {% if s.detail is string %}
                 <p>{{ s.detail }}</p>
               {% endif %}
+
             </details>
           {% endif %}
 

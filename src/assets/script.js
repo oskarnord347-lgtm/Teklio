@@ -7,7 +7,8 @@
 
   function getSystemTheme() {
     try {
-      return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+      return window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
         : "light";
     } catch (e) {
@@ -16,7 +17,7 @@
   }
 
   function applyTheme(choice) {
-    var theme = (choice === "system") ? getSystemTheme() : choice;
+    var theme = choice === "system" ? getSystemTheme() : choice;
     root.setAttribute("data-theme", theme);
   }
 
@@ -54,7 +55,6 @@
     btn.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
-
       if (pop.classList.contains("open")) closePopover(btn, pop);
       else openPopover(btn, pop);
     });
@@ -96,10 +96,11 @@
   });
 })();
 
-
 /* =========================
    ASSISTENT (läuft NUR auf /assistent/)
-   Zweistufig: Dropdown + optionaler Finder
+   Zweistufig: Dropdown + Finder
+   + StepLibrary Support
+   + FIX: Finder kann global über alle Geräte suchen
    ========================= */
 document.addEventListener("DOMContentLoaded", () => {
   let daten = {};
@@ -108,8 +109,15 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIssueName = null;
   let currentSteps = [];
   let currentStepIndex = 0;
+
+  // Nur für interne Unterscheidung (manuell vs auto gesetzt)
+  let isAutoDeviceSelect = false;
+
+  // (optional) später nutzbar – aktuell nicht zwingend
   let problemMeta = {};
 
+  // StepLibrary (Browser lädt JSON)
+  let stepLibrary = {}; // id -> { title, note, detail }
 
   // ====== Elemente holen ======
   const geraetSelect = document.getElementById("geraetSelect");
@@ -118,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Stufe 1: Dropdown
   const problemSelect = document.getElementById("problemSelect");
 
-  // Stufe 2: optionaler Finder
+  // Stufe 2: Finder
   const showProblemFinderBtn = document.getElementById("showProblemFinder");
   const problemFinderWrap = document.getElementById("problemFinderWrap");
   const problemFinder = document.getElementById("problemFinder");
@@ -143,11 +151,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Nur auf Assistent-Seite laufen lassen
   if (
-    !geraetSelect || !markeSelect ||
-    !problemSelect || !showProblemFinderBtn || !problemFinderWrap ||
-    !problemFinder || !problemSuggestions ||
+    !geraetSelect ||
+    !markeSelect ||
+    !problemSelect ||
+    !showProblemFinderBtn ||
+    !problemFinderWrap ||
+    !problemFinder ||
+    !problemSuggestions ||
     !anleitungDiv
-  ) return;
+  )
+    return;
 
   // ======================
   // NORMALIZE FUNCTION
@@ -174,25 +187,69 @@ document.addEventListener("DOMContentLoaded", () => {
     "kein ton": ["ton", "audio", "sound", "laut", "lautsprecher", "stumm", "mute"],
     "kein bild": ["schwarz", "black", "dunkel", "display", "screen", "anzeige", "bild"],
     "geht nicht an": ["an", "einschalten", "start", "startet", "power", "tot", "reagiert nicht", "led"],
-    "wlan verbindet nicht": ["wlan", "wifi", "internet", "netz", "netzwerk", "verbindung", "online"]
+    "wlan verbindet nicht": ["wlan", "wifi", "internet", "netz", "netzwerk", "verbindung", "online"],
   };
+
   // findet z.B. "Allgemeine_TV_Probleme"
   const findGeneralProblemsKey = (deviceObj) => {
     if (!deviceObj) return null;
-    return Object.keys(deviceObj).find(
-      (k) => k.startsWith("Allgemeine_") && k.endsWith("_Probleme")
-    );
+    return Object.keys(deviceObj).find((k) => k.startsWith("Allgemeine_") && k.endsWith("_Probleme"));
   };
 
   function getGeneralProblemsObj(deviceObj) {
     const key = findGeneralProblemsKey(deviceObj);
-    return key ? (deviceObj[key] || {}) : {};
+    return key ? deviceObj[key] || {} : {};
   }
 
   function getIssuesForCurrentDevice() {
     if (!aktuellesGeraetObj) return [];
     const generalProblems = getGeneralProblemsObj(aktuellesGeraetObj);
     return Object.keys(generalProblems || {});
+  }
+
+  // ✅ NEU: globale Liste {device, issue}
+  function getAllIssuesAcrossDevices() {
+    const out = [];
+    for (const deviceName of Object.keys(daten || {})) {
+      const deviceObj = daten[deviceName];
+      const general = getGeneralProblemsObj(deviceObj);
+      for (const issueName of Object.keys(general || {})) {
+        out.push({ device: deviceName, issue: issueName });
+      }
+    }
+    return out;
+  }
+
+  // ======================
+  // STEP LIBRARY -> Steps auflösen
+  // ======================
+  function resolveSteps(steps) {
+    if (!Array.isArray(steps)) return [];
+
+    return steps
+      .map((s) => {
+        // ALT: String
+        if (typeof s === "string") {
+          return { title: s, note: "", detail: null };
+        }
+
+        // NEU: { id: "..." }
+        if (s && typeof s === "object" && s.id) {
+          const lib = stepLibrary[s.id];
+          if (lib && typeof lib === "object") return { id: s.id, ...lib };
+
+          // Fallback: ID nicht gefunden
+          return { id: s.id, title: s.id, note: "", detail: null };
+        }
+
+        // NEU: direkter Step als Objekt {title, note, detail}
+        if (s && typeof s === "object" && s.title) {
+          return s;
+        }
+
+        return null;
+      })
+      .filter(Boolean);
   }
 
   // ======================
@@ -203,23 +260,38 @@ document.addEventListener("DOMContentLoaded", () => {
     problemSuggestions.style.display = "none";
   }
 
+  // ✅ kann Strings (lokal) oder Objekte {device, issue} (global)
   function showSuggestions(items) {
     if (!items.length) {
       hideSuggestions();
       return;
     }
+
     problemSuggestions.style.display = "block";
     problemSuggestions.innerHTML = items
-      .map(
-        (name) => `
-        <li class="search-item">
-          <a href="#" data-issue="${encodeURIComponent(name)}">
-            <strong>${name}</strong><br/>
-            <small>Problem auswählen</small>
-          </a>
-        </li>
-      `
-      )
+      .map((it) => {
+        if (typeof it === "string") {
+          return `
+            <li class="search-item">
+              <a href="#" data-issue="${encodeURIComponent(it)}">
+                <strong>${it}</strong><br/>
+                <small>Problem auswählen</small>
+              </a>
+            </li>
+          `;
+        }
+
+        const device = it.device || "";
+        const issue = it.issue || "";
+        return `
+          <li class="search-item">
+            <a href="#" data-device="${encodeURIComponent(device)}" data-issue="${encodeURIComponent(issue)}">
+              <strong>${issue}</strong><br/>
+              <small>${device}</small>
+            </a>
+          </li>
+        `;
+      })
       .join("");
   }
 
@@ -258,29 +330,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const base = generalProblems[issueName];
     if (!base) return;
 
-    const baseSteps = Array.isArray(base.steps) ? base.steps : [];
+    const baseStepsRaw = Array.isArray(base.steps) ? base.steps : [];
 
     // Marke/System optional
     const brandChoice = (markeSelect.value || "Allgemein").trim();
 
-    let overrideSteps = [];
+    let overrideStepsRaw = [];
     if (brandChoice && brandChoice !== "Allgemein") {
       const container = aktuellesGeraetObj.Marken || aktuellesGeraetObj.Systeme || {};
       const brandData = container[brandChoice];
 
       if (brandData && brandData.overrides) {
         const overrides = brandData.overrides;
-        const keys = Object.keys(overrides);
-        for (let i = 0; i < keys.length; i++) {
-          const key = keys[i];
+        for (const key of Object.keys(overrides)) {
           if (normalize(key) === normalize(issueName)) {
-            overrideSteps = Array.isArray(overrides[key]) ? overrides[key] : [];
+            overrideStepsRaw = Array.isArray(overrides[key]) ? overrides[key] : [];
             break;
           }
         }
       }
     }
 
+    const baseSteps = resolveSteps(baseStepsRaw);
+    const overrideSteps = resolveSteps(overrideStepsRaw);
+
+    // Overrides zuerst
     currentSteps = [...overrideSteps, ...baseSteps];
     currentStepIndex = 0;
 
@@ -294,17 +368,66 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   // STEP ANZEIGEN
   // ======================
+  function renderDetail(detail) {
+    if (!detail) return "";
+
+    // detail als string
+    if (typeof detail === "string") {
+      return `
+        <details class="step-details">
+          <summary>So geht’s</summary>
+          <p>${detail}</p>
+        </details>
+      `;
+    }
+
+    // detail als object mit platform arrays
+    const blocks = [];
+
+    function addList(label, arr) {
+      if (!Array.isArray(arr) || !arr.length) return;
+      blocks.push(`<p><strong>${label}</strong></p>`);
+      blocks.push("<ol>");
+      for (const item of arr) blocks.push(`<li>${item}</li>`);
+      blocks.push("</ol>");
+    }
+
+    addList("Allgemein", detail.allgemein);
+
+    addList("Windows", detail.windows);
+    addList("Mac", detail.mac);
+    addList("Android", detail.android);
+    addList("iPhone (iOS)", detail.ios);
+
+    addList("Tizen (Samsung TV)", detail.tizen);
+    addList("webOS (LG TV)", detail.webos);
+
+    if (!blocks.length) return "";
+
+    return `
+      <details class="step-details">
+        <summary>So geht’s</summary>
+        ${blocks.join("")}
+      </details>
+    `;
+  }
+
   function showStep() {
     anleitungDiv.innerHTML = "";
     if (!currentSteps.length) return;
 
-    const stepText = currentSteps[currentStepIndex];
+    const stepObj = currentSteps[currentStepIndex] || {};
+    const title = stepObj.title ? String(stepObj.title) : "Schritt";
+    const note = stepObj.note ? String(stepObj.note) : "";
+    const detailHTML = stepObj.detail ? renderDetail(stepObj.detail) : "";
 
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
       <h3>Schritt ${currentStepIndex + 1} von ${currentSteps.length}</h3>
-      <p>${stepText}</p>
+      <p><strong>${title}</strong></p>
+      ${note ? `<p class="step-note">${note}</p>` : ""}
+      ${detailHTML}
     `;
     anleitungDiv.appendChild(card);
 
@@ -388,7 +511,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   // Dropdown + Finder Logik
   // ======================
-
   function fillProblemDropdown() {
     const issues = getIssuesForCurrentDevice();
 
@@ -415,107 +537,125 @@ document.addEventListener("DOMContentLoaded", () => {
     problemFinder.focus();
   }
 
-function computeSuggestions(query) {
-  const qRaw = String(query || "").trim();
-  const q = normalize(qRaw);
-  if (!q || q.length < 2) return [];
+  function computeSuggestions(query) {
+    const qRaw = String(query || "").trim();
+    const q = normalize(qRaw);
+    if (!q || q.length < 2) return [];
 
-  const issues = getIssuesForCurrentDevice();
-  const scored = [];
+    const tokens = qRaw
+      .toLowerCase()
+      .replace(/[^\w\säöüß-]/g, " ")
+      .split(/\s+/)
+      .map(normalize)
+      .filter(Boolean);
 
-  // Query tokens (für "wifi geht nicht")
-  const tokens = qRaw
-    .toLowerCase()
-    .replace(/[^\w\säöüß-]/g, " ")
-    .split(/\s+/)
-    .map(normalize)
-    .filter(Boolean);
+    function hintBoostForIssue(issueName) {
+      const issueNorm = normalize(issueName);
+      let boost = 0;
 
-  // Helper: Synonym-Boost finden
-  function hintBoostForIssue(issueName) {
-    const issueNorm = normalize(issueName);
+      for (const [hintIssueKey, words] of Object.entries(ISSUE_HINTS)) {
+        const keyNorm = normalize(hintIssueKey);
 
-    let boost = 0;
+        const belongs =
+          issueNorm === keyNorm || issueNorm.includes(keyNorm) || keyNorm.includes(issueNorm);
+        if (!belongs) continue;
 
-    for (const [hintIssueKey, words] of Object.entries(ISSUE_HINTS)) {
-      // passt der Hint-Key zu einem echten Issue?
-      // (z.B. "geht nicht an" -> echter Issue könnte "Geht nicht an" heißen)
-      const keyNorm = normalize(hintIssueKey);
+        for (const w of words) {
+          const wn = normalize(w);
+          if (!wn) continue;
 
-      // wenn dieser Hint-Key ungefähr zu diesem issue gehört
-      // entweder direkt gleich oder issue enthält key / key enthält issue
-      const belongs =
-        issueNorm === keyNorm ||
-        issueNorm.includes(keyNorm) ||
-        keyNorm.includes(issueNorm);
-
-      if (!belongs) continue;
-
-      // wenn Query eines der Synonyme enthält -> Boost
-      for (const w of words) {
-        const wn = normalize(w);
-        if (!wn) continue;
-
-        if (q.includes(wn)) boost += 4; // starke Gewichtung
-        if (tokens.includes(wn)) boost += 2;
+          if (q.includes(wn)) boost += 4;
+          if (tokens.includes(wn)) boost += 2;
+        }
       }
+      return boost;
     }
 
-    return boost;
-  }
+    // ✅ lokal (wenn Gerät gewählt)
+    if (aktuellesGeraetObj) {
+      const issues = getIssuesForCurrentDevice();
+      const scored = [];
 
-  for (const name of issues) {
-    const n = normalize(name);
-    let score = 0;
+      for (const name of issues) {
+        const n = normalize(name);
+        let score = 0;
 
-    // klassisches Matching auf Problemname
-    if (n.startsWith(q)) score += 7;
-    if (n.includes(q)) score += 4;
+        if (n.startsWith(q)) score += 7;
+        if (n.includes(q)) score += 4;
 
-    // token matching: wenn einzelne Wörter passen
-    for (const t of tokens) {
-      if (!t) continue;
-      if (n.includes(t)) score += 2;
+        for (const t of tokens) {
+          if (!t) continue;
+          if (n.includes(t)) score += 2;
+        }
+
+        score += hintBoostForIssue(name);
+        if (q.length <= 5 && n.includes(q)) score += 3;
+
+        if (score > 0) scored.push({ name, score });
+      }
+
+      scored.sort((a, b) => b.score - a.score);
+      return scored.slice(0, 8).map((x) => x.name);
     }
 
-    // Synonym/Hint boost
-    score += hintBoostForIssue(name);
+    // ✅ global (wenn kein Gerät gewählt)
+    const all = getAllIssuesAcrossDevices();
+    const scored = [];
 
-    // kleine Bonus-Regel: kurze Eingaben wie "wlan", "ton", "bild"
-    if (q.length <= 5 && n.includes(q)) score += 3;
+    for (const entry of all) {
+      const issueN = normalize(entry.issue);
+      const devN = normalize(entry.device);
+      let score = 0;
 
-    if (score > 0) scored.push({ name, score });
+      if (issueN.startsWith(q)) score += 8;
+      if (issueN.includes(q)) score += 5;
+
+      if (devN.startsWith(q)) score += 9;
+      if (devN.includes(q)) score += 4;
+
+      for (const t of tokens) {
+        if (!t) continue;
+        if (issueN.includes(t)) score += 2;
+        if (devN.includes(t)) score += 1;
+      }
+
+      score += hintBoostForIssue(entry.issue);
+
+      if (q.length <= 5 && (issueN.includes(q) || devN.includes(q))) score += 2;
+
+      if (score > 0) scored.push({ entry, score });
+    }
+
+    scored.sort((a, b) => b.score - a.score);
+    return scored.slice(0, 8).map((x) => x.entry);
   }
-
-  scored.sort((a, b) => b.score - a.score);
-  return scored.slice(0, 8).map((x) => x.name);
-}
-
 
   // ======================
-  // JSON LADEN (Guides + ProblemMeta)
+  // JSON LADEN (Guides + ProblemMeta + StepLibrary)
   // ======================
   Promise.all([
     fetch("/assets/guides.json").then((r) => r.json()),
-    fetch("/assets/problemMeta.json")
-      .then((r) => r.json())
-      .catch(() => ({})) // falls Datei noch nicht existiert
+    fetch("/assets/problemMeta.json").then((r) => r.json()).catch(() => ({})),
+    fetch("/assets/stepLibrary.json").then((r) => r.json()).catch(() => ({})),
   ])
-    .then(([guidesData, metaData]) => {
+    .then(([guidesData, metaData, stepLib]) => {
       daten = guidesData;
-      problemMeta = metaData || {}; // nutzt die Variable von oben (KEIN neues let!)
+      problemMeta = metaData || {};
+      stepLibrary = stepLib || {};
 
-      // Geräte-Dropdown füllen
       Object.keys(daten).forEach((geraet) => {
         const opt = document.createElement("option");
         opt.value = geraet;
         opt.textContent = geraet;
         geraetSelect.appendChild(opt);
       });
-  })
-  .catch(() => {
-    console.warn("Fehler beim Laden der JSON-Daten.");
-  });
+
+      // Finder darf auch ohne Gerät geöffnet werden
+      showProblemFinderBtn.disabled = false;
+    })
+    .catch(() => {
+      console.warn("Fehler beim Laden der JSON-Daten.");
+    });
 
   // ======================
   // GERÄT AUSWÄHLEN
@@ -523,17 +663,19 @@ function computeSuggestions(query) {
   geraetSelect.addEventListener("change", (e) => {
     const selected = e.target.value;
 
-    // reset brand
     markeSelect.innerHTML = '<option value="Allgemein">Allgemein</option>';
     markeSelect.disabled = true;
 
-    // reset problems
     problemSelect.innerHTML = '<option value="">--Bitte wählen--</option>';
     problemSelect.disabled = true;
 
-    showProblemFinderBtn.disabled = true;
-    closeFinder();
-    problemFinder.value = "";
+    // Nur schließen wenn User manuell im Dropdown gewählt hat
+    if (!isAutoDeviceSelect) {
+      closeFinder();
+      problemFinder.value = "";
+    } else {
+      hideSuggestions();
+    }
 
     resetFlow();
 
@@ -544,7 +686,6 @@ function computeSuggestions(query) {
 
     aktuellesGeraetObj = daten[selected];
 
-    // Marken/Systeme optional
     const container = aktuellesGeraetObj.Marken || aktuellesGeraetObj.Systeme || {};
     const brandNames = Object.keys(container);
 
@@ -556,13 +697,7 @@ function computeSuggestions(query) {
     }
 
     markeSelect.disabled = false;
-
-    // Probleme füllen (Stufe 1)
     fillProblemDropdown();
-
-    // Stufe 2 darf benutzt werden, aber ist zugeklappt
-    showProblemFinderBtn.disabled = false;
-    closeFinder();
   });
 
   // ======================
@@ -574,7 +709,6 @@ function computeSuggestions(query) {
 
     currentIssueName = issue;
 
-    // Finder schließen + sync input
     problemFinder.value = issue;
     closeFinder();
 
@@ -600,19 +734,31 @@ function computeSuggestions(query) {
     showSuggestions(items);
   });
 
-  // Klick auf Suggestion -> auswählen + Dropdown synchronisieren
+  // ✅ Klick auf Suggestion -> (global: Gerät setzen), dann Issue laden
   problemSuggestions.addEventListener("click", (e) => {
     const a = e.target && e.target.closest ? e.target.closest("a") : null;
     if (!a) return;
     e.preventDefault();
 
     const issue = decodeURIComponent(a.getAttribute("data-issue") || "");
+    const device = decodeURIComponent(a.getAttribute("data-device") || "");
+
     if (!issue) return;
 
-    currentIssueName = issue;
+    // global Treffer: Gerät setzen
+    if (device) {
+      isAutoDeviceSelect = true;
+      geraetSelect.value = device;
+      geraetSelect.dispatchEvent(new Event("change", { bubbles: true }));
+      isAutoDeviceSelect = false;
+    }
 
+    currentIssueName = issue;
     problemFinder.value = issue;
-    problemSelect.value = issue; // wichtig: Dropdown synchronisieren
+
+    // Dropdown synchronisieren (falls vorhanden)
+    if (problemSelect) problemSelect.value = issue;
+
     closeFinder();
 
     resetFlow({ keepDevice: true });
@@ -629,13 +775,34 @@ function computeSuggestions(query) {
       const items = computeSuggestions(problemFinder.value || "");
       if (items.length === 1) {
         e.preventDefault();
-        const issue = items[0];
+
+        const one = items[0];
+
+        // lokal: string, global: object
+        let issue = "";
+        let device = "";
+
+        if (typeof one === "string") {
+          issue = one;
+        } else {
+          issue = one.issue || "";
+          device = one.device || "";
+        }
+
+        if (!issue) return;
+
+        if (device) {
+          isAutoDeviceSelect = true;
+          geraetSelect.value = device;
+          geraetSelect.dispatchEvent(new Event("change", { bubbles: true }));
+          isAutoDeviceSelect = false;
+        }
 
         currentIssueName = issue;
         problemFinder.value = issue;
-        problemSelect.value = issue;
-        closeFinder();
+        if (problemSelect) problemSelect.value = issue;
 
+        closeFinder();
         resetFlow({ keepDevice: true });
         loadSteps(issue);
       }
@@ -669,8 +836,10 @@ function computeSuggestions(query) {
 
   if (sendBtn) {
     sendBtn.addEventListener("click", () => {
-      const name = document.getElementById("name") ? document.getElementById("name").value.trim() : "";
-      const message = document.getElementById("message") ? document.getElementById("message").value.trim() : "";
+      const nameEl = document.getElementById("name");
+      const msgEl = document.getElementById("message");
+      const name = nameEl ? nameEl.value.trim() : "";
+      const message = msgEl ? msgEl.value.trim() : "";
 
       if (!name || !message) {
         alert("Bitte Name und Nachricht ausfüllen!");
@@ -681,26 +850,26 @@ function computeSuggestions(query) {
       alert("Danke für dein Feedback!");
 
       if (feedbackForm) feedbackForm.style.display = "none";
-      if (document.getElementById("name")) document.getElementById("name").value = "";
-      if (document.getElementById("message")) document.getElementById("message").value = "";
+      if (nameEl) nameEl.value = "";
+      if (msgEl) msgEl.value = "";
     });
   }
+});
 
-  /* =========================
+/* =========================
    GUIDE: <details>/<summary> Fix
-   (erzwingt Toggle, falls CSS/JS es blockiert)
+   (nur wenn wirklich step-details da sind)
    ========================= */
-  document.addEventListener("click", (e) => {
+document.addEventListener("click", (e) => {
   const summary = e.target && e.target.closest ? e.target.closest("summary") : null;
   if (!summary) return;
 
+  // nur unsere Step-Details anfassen
   const details = summary.parentElement;
   if (!details || details.tagName !== "DETAILS") return;
+  if (!details.classList.contains("step-details")) return;
 
   // Native Toggle kann durch anderes JS blockiert werden -> manuell togglen
   details.open = !details.open;
   e.preventDefault();
-  });
-
-
 });

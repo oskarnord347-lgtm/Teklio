@@ -311,5 +311,74 @@
         "overrides": {}
       }
     }
+  },
+  "Drucker": {
+    "Allgemeine_Drucker_Probleme": {
+      "Drucker wird nicht erkannt": {
+        "difficulty": "leicht",
+        "steps": [
+          { "id": "printer_check_on_no_error" },
+          { "id": "printer_check_connection_usb_or_wifi" },
+          { "id": "restart_printer_wait_10s" },
+          { "id": "restart_router_unplug_30s_wait_2_5" },
+          { "id": "remove_and_add_printer" }
+        ]
+      },
+      "Druckt nicht": {
+        "difficulty": "leicht",
+        "steps": [
+          { "id": "printer_check_on_no_error" },
+          { "id": "printer_select_correct_printer" },
+          { "id": "printer_check_connection_usb_or_wifi" },
+          { "id": "restart_printer_wait_10s" },
+          { "id": "remove_and_add_printer" }
+        ]
+      },
+      "Papierstau": {
+        "difficulty": "leicht",
+        "steps": [
+          { "id": "printer_check_on_no_error" },
+          { "id": "restart_printer_wait_10s" }
+        ]
+      },
+      "Patrone / Toner wird nicht erkannt": {
+        "difficulty": "leicht",
+        "steps": [
+          { "id": "printer_check_on_no_error" },
+          { "id": "restart_printer_wait_10s" }
+        ]
+      },
+      "Streifen im Druck / Schlechte Druckqualität": {
+        "difficulty": "leicht",
+        "steps": [
+          { "id": "printer_check_on_no_error" }
+        ]
+      },
+      "WLAN-Drucker verbindet nicht": {
+        "difficulty": "mittel",
+        "steps": [
+          { "id": "check_internet_on_other_device" },
+          { "id": "toggle_wifi_or_airplane_mode" },
+          { "id": "restart_printer_wait_10s" },
+          { "id": "restart_router_unplug_30s_wait_2_5" },
+          { "id": "move_closer_or_use_lan" },
+          { "id": "reset_network_settings_device" }
+        ]
+      }
+    },
+    "Marken": {
+      "Brother": {
+        "overrides": {}
+      },
+      "Canon": {
+        "overrides": {}
+      },
+      "Epson": {
+        "overrides": {}
+      },
+      "HP": {
+        "overrides": {}
+      }
+    }
   }
 }
