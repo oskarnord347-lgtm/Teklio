@@ -100,7 +100,11 @@
    ASSISTENT (läuft NUR auf /assistent/)
    Zweistufig: Dropdown + Finder
    + StepLibrary Support
-   + FIX: Finder kann global über alle Geräte suchen
+   + UX UPGRADE:
+     - Hybrid-Finder (passend zum Gerät + weitere Geräte)
+     - Debounce beim Tippen
+     - Tastatur (↑ ↓ Enter Esc) in Suggestions
+     - Hinweis wenn im Gerät nix, aber global Treffer
    ========================= */
 document.addEventListener("DOMContentLoaded", () => {
   let daten = {};
@@ -163,6 +167,74 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
 
   // ======================
+  // A11Y: ARIA Basis (falls im HTML nicht gesetzt)
+  // ======================
+  try {
+    problemFinder.setAttribute("role", "combobox");
+    problemFinder.setAttribute("aria-autocomplete", "list");
+    problemFinder.setAttribute("aria-controls", "problemSuggestions");
+    problemFinder.setAttribute("aria-expanded", "false");
+    problemSuggestions.setAttribute("role", "listbox");
+  } catch (e) {}
+
+  // ======================
+  // DEBOUNCE
+  // ======================
+  function debounce(fn, wait) {
+    let t = null;
+    return function (...args) {
+      clearTimeout(t);
+      t = setTimeout(() => fn.apply(this, args), wait);
+    };
+  }
+
+  // ======================
+  // KEYBOARD NAV (Suggestions)
+  // ======================
+  let activeSuggestionIndex = -1;
+
+  function getSuggestionLinks() {
+    return Array.from(problemSuggestions.querySelectorAll('a[data-issue]'));
+  }
+
+  function resetActiveSuggestion() {
+    activeSuggestionIndex = -1;
+    const links = getSuggestionLinks();
+    links.forEach((a) => {
+      a.classList.remove("active-suggestion");
+      a.setAttribute("aria-selected", "false");
+    });
+    problemFinder.setAttribute("aria-activedescendant", "");
+  }
+
+  function setActiveSuggestion(index) {
+    const links = getSuggestionLinks();
+    if (!links.length) {
+      resetActiveSuggestion();
+      return;
+    }
+
+    // wrap
+    if (index < 0) index = links.length - 1;
+    if (index >= links.length) index = 0;
+
+    activeSuggestionIndex = index;
+
+    links.forEach((a, i) => {
+      const active = i === activeSuggestionIndex;
+      a.classList.toggle("active-suggestion", active);
+      a.setAttribute("aria-selected", active ? "true" : "false");
+    });
+
+    const active = links[activeSuggestionIndex];
+    if (!active.id) active.id = "sugg-" + Math.random().toString(16).slice(2);
+    problemFinder.setAttribute("aria-activedescendant", active.id);
+
+    // in Sicht halten
+    active.scrollIntoView({ block: "nearest" });
+  }
+
+  // ======================
   // NORMALIZE FUNCTION
   // ======================
   const normalize = (str) =>
@@ -179,6 +251,20 @@ document.addEventListener("DOMContentLoaded", () => {
       .replace(/_/g, "")
       .replace(/\//g, "")
       .replace(/-/g, "");
+
+  // slugify für URLs (für globale Vorschläge sehr praktisch)
+  const slugify = (str) =>
+    String(str)
+      .toLowerCase()
+      .trim()
+      .replace(/ä/g, "ae")
+      .replace(/ö/g, "oe")
+      .replace(/ü/g, "ue")
+      .replace(/ß/g, "ss")
+      .replace(/&/g, "und")
+      .replace(/[^\w\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
 
   // ======================
   // SMART FINDER HINTS
@@ -207,7 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return Object.keys(generalProblems || {});
   }
 
-  // ✅ NEU: globale Liste {device, issue}
+  // globale Liste {device, issue}
   function getAllIssuesAcrossDevices() {
     const out = [];
     for (const deviceName of Object.keys(daten || {})) {
@@ -258,41 +344,94 @@ document.addEventListener("DOMContentLoaded", () => {
   function hideSuggestions() {
     problemSuggestions.innerHTML = "";
     problemSuggestions.style.display = "none";
+    problemFinder.setAttribute("aria-expanded", "false");
+    resetActiveSuggestion();
   }
 
-  // ✅ kann Strings (lokal) oder Objekte {device, issue} (global)
-  function showSuggestions(items) {
-    if (!items.length) {
+  // --- Render: Hybrid-UX (mit Überschriften + Hinweis) ---
+  function showSuggestions(payload) {
+    const primary = payload && Array.isArray(payload.primary) ? payload.primary : [];
+    const secondary = payload && Array.isArray(payload.secondary) ? payload.secondary : [];
+    const global = payload && Array.isArray(payload.global) ? payload.global : [];
+
+    const hasAnything = primary.length || secondary.length || global.length;
+    if (!hasAnything) {
       hideSuggestions();
       return;
     }
 
-    problemSuggestions.style.display = "block";
-    problemSuggestions.innerHTML = items
-      .map((it) => {
-        if (typeof it === "string") {
-          return `
-            <li class="search-item">
-              <a href="#" data-issue="${encodeURIComponent(it)}">
-                <strong>${it}</strong><br/>
-                <small>Problem auswählen</small>
-              </a>
-            </li>
-          `;
-        }
+    const selectedDeviceName = (geraetSelect.value || "").trim();
+    const html = [];
 
-        const device = it.device || "";
-        const issue = it.issue || "";
+    // UX Hint: nichts im Gerät, aber global Treffer
+    if (selectedDeviceName && !primary.length && secondary.length) {
+      html.push(`
+        <li style="padding:10px 12px; border:1px solid var(--border2); border-radius:12px; margin:8px 8px 10px;">
+          <strong>Hinweis:</strong> Für <strong>${selectedDeviceName}</strong> wurde nichts Passendes gefunden.
+          Vielleicht ist ein anderes Gerät gemeint?
+        </li>
+      `);
+    }
+
+    const renderItem = (it) => {
+      // it kann string (lokal) oder {device, issue}
+      if (typeof it === "string") {
         return `
-          <li class="search-item">
-            <a href="#" data-device="${encodeURIComponent(device)}" data-issue="${encodeURIComponent(issue)}">
-              <strong>${issue}</strong><br/>
-              <small>${device}</small>
+          <li class="search-item" role="option">
+            <a href="#" data-issue="${encodeURIComponent(it)}" aria-selected="false">
+              <strong>${it}</strong><br/>
+              <small>Problem auswählen</small>
             </a>
           </li>
         `;
-      })
-      .join("");
+      }
+
+      const device = it.device || "";
+      const issue = it.issue || "";
+      return `
+        <li class="search-item" role="option">
+          <a href="#" data-device="${encodeURIComponent(device)}" data-issue="${encodeURIComponent(issue)}" aria-selected="false">
+            <strong>${issue}</strong><br/>
+            <small>${device}</small>
+          </a>
+        </li>
+      `;
+    };
+
+    // Hybrid: erst Gerät-passend
+    if (primary.length) {
+      html.push(`
+        <li class="suggestion-group">
+        Passend zu deinem Gerät
+        </li>
+      `);
+      for (const it of primary) html.push(renderItem(it));
+    }
+
+    // Hybrid: dann andere Geräte
+    if (secondary.length) {
+      html.push(`
+        <li class="suggestion-group">
+        Weitere passende Probleme
+        </li>
+      `);
+      for (const it of secondary) html.push(renderItem(it));
+    }
+
+    // Global (wenn kein Gerät gewählt)
+    if (global.length) {
+      html.push(`
+        <li class="search-item" style="padding:6px 10px; opacity:.75; font-weight:800;">
+          Gefundene Probleme
+        </li>
+      `);
+      for (const it of global) html.push(renderItem(it));
+    }
+
+    problemSuggestions.style.display = "block";
+    problemSuggestions.innerHTML = html.join("");
+    problemFinder.setAttribute("aria-expanded", "true");
+    resetActiveSuggestion();
   }
 
   // ======================
@@ -317,6 +456,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (helpFeedback) helpFeedback.style.display = "none";
     if (progressBar) progressBar.style.width = "0%";
 
+    // wichtig: Suggestions nicht immer killen (wir machen das bewusst beim Tippen)
+    // aber bei Flow-Reset ohne Finder-Kontext ist es ok:
+    // -> hier lassen wir hideSuggestions() drin wie vorher:
     hideSuggestions();
   }
 
@@ -537,97 +679,117 @@ document.addEventListener("DOMContentLoaded", () => {
     problemFinder.focus();
   }
 
-  function computeSuggestions(query) {
-    const qRaw = String(query || "").trim();
-    const q = normalize(qRaw);
-    if (!q || q.length < 2) return [];
-
-    const tokens = qRaw
+  // ---------- SCORING HELPERS ----------
+  const tokenize = (qRaw) =>
+    String(qRaw || "")
       .toLowerCase()
       .replace(/[^\w\säöüß-]/g, " ")
       .split(/\s+/)
       .map(normalize)
       .filter(Boolean);
 
-    function hintBoostForIssue(issueName) {
-      const issueNorm = normalize(issueName);
-      let boost = 0;
+  function hintBoostForIssue(issueName, qCompact, tokens) {
+    const issueNorm = normalize(issueName);
+    let boost = 0;
 
-      for (const [hintIssueKey, words] of Object.entries(ISSUE_HINTS)) {
-        const keyNorm = normalize(hintIssueKey);
+    for (const [hintIssueKey, words] of Object.entries(ISSUE_HINTS)) {
+      const keyNorm = normalize(hintIssueKey);
 
-        const belongs =
-          issueNorm === keyNorm || issueNorm.includes(keyNorm) || keyNorm.includes(issueNorm);
-        if (!belongs) continue;
+      const belongs =
+        issueNorm === keyNorm || issueNorm.includes(keyNorm) || keyNorm.includes(issueNorm);
+      if (!belongs) continue;
 
-        for (const w of words) {
-          const wn = normalize(w);
-          if (!wn) continue;
+      for (const w of words) {
+        const wn = normalize(w);
+        if (!wn) continue;
 
-          if (q.includes(wn)) boost += 4;
-          if (tokens.includes(wn)) boost += 2;
-        }
+        if (qCompact.includes(wn)) boost += 4;
+        if (tokens.includes(wn)) boost += 2;
       }
-      return boost;
+    }
+    return boost;
+  }
+
+  function scoreEntry({ device, issue }, qCompact, tokens, selectedDevice) {
+    const issueN = normalize(issue);
+    const devN = normalize(device);
+    let score = 0;
+
+    // Issue match
+    if (issueN.startsWith(qCompact)) score += 8;
+    if (issueN.includes(qCompact)) score += 5;
+
+    // Device match (hilft auch, wenn User "drucker" tippt)
+    if (devN.startsWith(qCompact)) score += 9;
+    if (devN.includes(qCompact)) score += 4;
+
+    // Token match
+    for (const t of tokens) {
+      if (!t) continue;
+      if (issueN.includes(t)) score += 2;
+      if (devN.includes(t)) score += 1;
     }
 
-    // ✅ lokal (wenn Gerät gewählt)
-    if (aktuellesGeraetObj) {
-      const issues = getIssuesForCurrentDevice();
-      const scored = [];
+    // Hint boost
+    score += hintBoostForIssue(issue, qCompact, tokens);
 
-      for (const name of issues) {
-        const n = normalize(name);
-        let score = 0;
+    // very short query extra
+    if (qCompact.length <= 5 && (issueN.includes(qCompact) || devN.includes(qCompact))) score += 2;
 
-        if (n.startsWith(q)) score += 7;
-        if (n.includes(q)) score += 4;
+    // Kontext-Priorität
+    if (selectedDevice && device === selectedDevice) score += 3;
 
-        for (const t of tokens) {
-          if (!t) continue;
-          if (n.includes(t)) score += 2;
-        }
+    return score;
+  }
 
-        score += hintBoostForIssue(name);
-        if (q.length <= 5 && n.includes(q)) score += 3;
+  // ✅ HYBRID: Wenn Gerät gewählt => primary + secondary, sonst global
+  function computeSuggestionsHybrid(query) {
+    const qRaw = String(query || "").trim();
+    const qCompact = normalize(qRaw);
+    if (!qCompact || qCompact.length < 2) return { primary: [], secondary: [], global: [] };
 
-        if (score > 0) scored.push({ name, score });
-      }
+    const tokens = tokenize(qRaw);
 
-      scored.sort((a, b) => b.score - a.score);
-      return scored.slice(0, 8).map((x) => x.name);
-    }
-
-    // ✅ global (wenn kein Gerät gewählt)
+    const selectedDeviceName = geraetSelect.value || "";
     const all = getAllIssuesAcrossDevices();
+
     const scored = [];
-
     for (const entry of all) {
-      const issueN = normalize(entry.issue);
-      const devN = normalize(entry.device);
-      let score = 0;
-
-      if (issueN.startsWith(q)) score += 8;
-      if (issueN.includes(q)) score += 5;
-
-      if (devN.startsWith(q)) score += 9;
-      if (devN.includes(q)) score += 4;
-
-      for (const t of tokens) {
-        if (!t) continue;
-        if (issueN.includes(t)) score += 2;
-        if (devN.includes(t)) score += 1;
-      }
-
-      score += hintBoostForIssue(entry.issue);
-
-      if (q.length <= 5 && (issueN.includes(q) || devN.includes(q))) score += 2;
-
+      const score = scoreEntry(entry, qCompact, tokens, selectedDeviceName);
       if (score > 0) scored.push({ entry, score });
     }
 
     scored.sort((a, b) => b.score - a.score);
-    return scored.slice(0, 8).map((x) => x.entry);
+
+    // Dedup nach device+issue
+    const seen = new Set();
+    const ordered = [];
+    for (const x of scored) {
+      const key = `${x.entry.device}||${x.entry.issue}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      ordered.push(x.entry);
+      if (ordered.length >= 16) break;
+    }
+
+    // Kein Gerät gewählt: global
+    if (!selectedDeviceName) {
+      return { global: ordered.slice(0, 10) };
+    }
+
+    // Gerät gewählt: split
+    const primary = [];
+    const secondary = [];
+
+    for (const e of ordered) {
+      if (e.device === selectedDeviceName) primary.push(e);
+      else secondary.push(e);
+    }
+
+    return {
+      primary: primary.slice(0, 6),
+      secondary: secondary.slice(0, 6),
+    };
   }
 
   // ======================
@@ -674,10 +836,18 @@ document.addEventListener("DOMContentLoaded", () => {
       closeFinder();
       problemFinder.value = "";
     } else {
+      // Auto gesetzt: Finder offen lassen, aber Vorschläge neu berechnen
       hideSuggestions();
     }
 
-    resetFlow();
+    // Flow reset
+    currentSteps = [];
+    currentStepIndex = 0;
+    currentIssueName = null;
+    anleitungDiv.innerHTML = "";
+    if (stepNav) stepNav.style.display = "none";
+    if (helpFeedback) helpFeedback.style.display = "none";
+    if (progressBar) progressBar.style.width = "0%";
 
     if (!selected) {
       aktuellesGeraetObj = null;
@@ -708,11 +878,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!issue) return;
 
     currentIssueName = issue;
-
     problemFinder.value = issue;
     closeFinder();
 
-    resetFlow({ keepDevice: true });
+    // reset + load
+    currentSteps = [];
+    currentStepIndex = 0;
+    anleitungDiv.innerHTML = "";
+    if (progressBar) progressBar.style.width = "0%";
+
     loadSteps(issue);
   });
 
@@ -721,18 +895,31 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   showProblemFinderBtn.addEventListener("click", () => {
     openFinder();
+
+    // Wenn schon Text drin ist: direkt Vorschläge zeigen
+    const q = problemFinder.value || "";
+    const payload = computeSuggestionsHybrid(q);
+    showSuggestions(payload);
   });
 
   // ======================
-  // PROBLEM FINDER (tippen)
+  // PROBLEM FINDER (tippen) -> DEBOUNCED
   // ======================
-  problemFinder.addEventListener("input", () => {
-    resetFlow({ keepDevice: true });
+  const runFinder = debounce(() => {
+    // nur step-flow resetten, nicht die suggestions killen (die bauen wir neu)
+    currentSteps = [];
+    currentStepIndex = 0;
+    anleitungDiv.innerHTML = "";
+    if (stepNav) stepNav.style.display = "none";
+    if (helpFeedback) helpFeedback.style.display = "none";
+    if (progressBar) progressBar.style.width = "0%";
 
     const q = problemFinder.value || "";
-    const items = computeSuggestions(q);
-    showSuggestions(items);
-  });
+    const payload = computeSuggestionsHybrid(q);
+    showSuggestions(payload);
+  }, 120);
+
+  problemFinder.addEventListener("input", runFinder);
 
   // ✅ Klick auf Suggestion -> (global: Gerät setzen), dann Issue laden
   problemSuggestions.addEventListener("click", (e) => {
@@ -761,50 +948,66 @@ document.addEventListener("DOMContentLoaded", () => {
 
     closeFinder();
 
-    resetFlow({ keepDevice: true });
+    // reset + load
+    currentSteps = [];
+    currentStepIndex = 0;
+    anleitungDiv.innerHTML = "";
+    if (progressBar) progressBar.style.width = "0%";
+
     loadSteps(issue);
+
+    // keyboard/aria sauber
+    resetActiveSuggestion();
+    problemFinder.setAttribute("aria-expanded", "false");
   });
 
-  // Enter: wenn genau 1 Vorschlag -> nehmen
+  // ======================
+  // Tastatur im Finder: ↑ ↓ Enter Esc
+  // ======================
   problemFinder.addEventListener("keydown", (e) => {
+    const isOpen = problemSuggestions.style.display === "block";
+    const links = getSuggestionLinks();
+
     if (e.key === "Escape") {
-      closeFinder();
-      problemFinder.blur();
-    }
-    if (e.key === "Enter") {
-      const items = computeSuggestions(problemFinder.value || "");
-      if (items.length === 1) {
-        e.preventDefault();
-
-        const one = items[0];
-
-        // lokal: string, global: object
-        let issue = "";
-        let device = "";
-
-        if (typeof one === "string") {
-          issue = one;
-        } else {
-          issue = one.issue || "";
-          device = one.device || "";
-        }
-
-        if (!issue) return;
-
-        if (device) {
-          isAutoDeviceSelect = true;
-          geraetSelect.value = device;
-          geraetSelect.dispatchEvent(new Event("change", { bubbles: true }));
-          isAutoDeviceSelect = false;
-        }
-
-        currentIssueName = issue;
-        problemFinder.value = issue;
-        if (problemSelect) problemSelect.value = issue;
-
+      // erst Suggestions schließen, sonst Finder
+      if (isOpen) {
+        hideSuggestions();
+      } else {
         closeFinder();
-        resetFlow({ keepDevice: true });
-        loadSteps(issue);
+        problemFinder.blur();
+      }
+      return;
+    }
+
+    if (!isOpen || !links.length) {
+      // fallback: Enter mit genau 1 Treffer (Payload) – wenn Suggestions zu sind, einfach nichts machen
+      return;
+    }
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveSuggestion(activeSuggestionIndex + 1);
+      return;
+    }
+
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveSuggestion(activeSuggestionIndex - 1);
+      return;
+    }
+
+    if (e.key === "Enter") {
+      // wenn aktiv markiert: klick auslösen
+      if (activeSuggestionIndex >= 0 && links[activeSuggestionIndex]) {
+        e.preventDefault();
+        links[activeSuggestionIndex].click();
+        return;
+      }
+
+      // fallback: wenn genau 1 suggestion vorhanden
+      if (links.length === 1) {
+        e.preventDefault();
+        links[0].click();
       }
     }
   });
@@ -820,7 +1023,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   markeSelect.addEventListener("change", () => {
     if (currentIssueName) {
-      resetFlow({ keepDevice: true });
+      currentSteps = [];
+      currentStepIndex = 0;
+      anleitungDiv.innerHTML = "";
+      if (progressBar) progressBar.style.width = "0%";
       loadSteps(currentIssueName);
     }
   });
@@ -873,3 +1079,4 @@ document.addEventListener("click", (e) => {
   details.open = !details.open;
   e.preventDefault();
 });
+

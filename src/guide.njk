@@ -10,26 +10,98 @@ description: "{{ guide.description }}"
 canonical: "https://teklio.de{{ guide.url }}"
 ---
 
-<header class="guide-header">
-  {% set issue = guide.issueName %}
-  {% set device = guide.deviceName %}
+{# =========================================================
+   SEO: Structured Data (HowTo + optional FAQ)
+   - passt zu deinen guide.steps (String oder Objekt)
+   - nutzt canonical aus dem Frontmatter
+   ========================================================= #}
 
-  <h1 class="guide-title">
-    {% if issue.startsWith("Kein") or issue.startsWith("Keine") %}
-      {{ issue }} beim {{ device }}
-    {% elseif issue.includes("nicht") %}
-      {{ device }} {{ issue }}
-    {% else %}
-      {{ issue }} am {{ device }}
+{% set issue = guide.issueName %}
+{% set device = guide.deviceName %}
+{% set stepCount = guide.steps | length %}
+{% set estMinutes = stepCount * 2 %}
+
+{# H1-Text als Variable (damit du ihn im HTML UND im Schema nutzt) #}
+{% set pageH1 %}
+  {% if issue.startsWith("Kein") or issue.startsWith("Keine") %}
+    {{ issue }} beim {{ device }}
+  {% elseif issue.includes("nicht") %}
+    {{ device }} {{ issue }}
+  {% else %}
+    {{ issue }} am {{ device }}
+  {% endif %}
+{% endset %}
+{% set pageH1 = pageH1 | trim %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "HowTo",
+      "@id": "{{ canonical }}#howto",
+      "name": "{{ pageH1 | escape }}",
+      "description": "{{ (guide.description or guide.intro or 'Schritt-für-Schritt Anleitung zur Problemlösung.') | escape }}",
+      "inLanguage": "de-DE",
+      "totalTime": "PT{{ estMinutes }}M",
+      "url": "{{ canonical }}",
+      "step": [
+        {% for s in guide.steps %}
+          {
+            "@type": "HowToStep",
+            "position": {{ loop.index }},
+            "name": "{% if s.title %}{{ s.title | escape }}{% else %}{{ s | escape }}{% endif %}",
+            "text": "{% if s.note %}{{ s.note | escape }}{% elseif s.title %}{{ s.title | escape }}{% else %}{{ s | escape }}{% endif %}"
+          }{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ]
+    }
+    {% if (guide.causes and guide.causes.length) or guide.support %}
+    ,
+    {
+      "@type": "FAQPage",
+      "@id": "{{ canonical }}#faq",
+      "inLanguage": "de-DE",
+      "mainEntity": [
+        {% set hasItems = false %}
+
+        {% if guide.causes and guide.causes.length %}
+          {% set hasItems = true %}
+          {
+            "@type": "Question",
+            "name": "Häufige Ursachen",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "{{ guide.causes | join(' • ') | escape }}"
+            }
+          }
+        {% endif %}
+
+        {% if guide.support %}
+          {% if hasItems %},{% endif %}
+          {
+            "@type": "Question",
+            "name": "Wann solltest du den Support kontaktieren?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "{{ guide.support | escape }}"
+            }
+          }
+        {% endif %}
+      ]
+    }
     {% endif %}
-  </h1>
+  ]
+}
+</script>
+
+<header class="guide-header">
+  <h1 class="guide-title">{{ pageH1 }}</h1>
 
   <p class="guide-subline">
     Verständliche Anleitung zur schnellen Problemlösung
   </p>
 </header>
-
-{% set stepCount = guide.steps | length %}
 
 <h2 class="steps-heading">
   <span class="steps-count">{{ stepCount }}</span>
@@ -72,7 +144,7 @@ canonical: "https://teklio.de{{ guide.url }}"
             <details class="step-details">
               <summary>So geht’s</summary>
 
-              {# ✅ Allgemein (wird in deiner stepLibrary häufig genutzt) #}
+              {# ✅ Allgemein #}
               {% if s.detail.allgemein and s.detail.allgemein.length %}
                 <p><strong>Allgemein</strong></p>
                 <ol>
@@ -122,7 +194,7 @@ canonical: "https://teklio.de{{ guide.url }}"
                 </ol>
               {% endif %}
 
-              {# ✅ Fallback nur wenn detail wirklich Text ist (nie wieder [object Object]) #}
+              {# ✅ Fallback nur wenn detail wirklich Text ist #}
               {% if s.detail is string %}
                 <p>{{ s.detail }}</p>
               {% endif %}

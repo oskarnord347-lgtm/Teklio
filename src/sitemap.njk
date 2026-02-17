@@ -1,0 +1,27 @@
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{# Basis-URL: wenn du später mal staging hast, kannst du das hier zentral machen #}
+{% set base = "https://teklio.de" %}
+
+{# Alle generierten Seiten (inkl. Pagination usw.) #}
+{% for page in collections.all %}
+  {# Filter: keine Assets, keine 404, keine JSON #}
+  {% if page.url
+    and not page.url.startsWith("/assets/")
+    and page.url != "/404/"
+    and not page.url.endsWith(".json")
+  %}
+    <url>
+    <loc>{{ base }}{{ page.url }}</loc>
+    {% if page.date %}
+    <lastmod>{{ page.date | date("yyyy") }}-{{ page.date | date("de-DE") | replace(".", "-") }}</lastmod>
+    {% endif %}
+  </url>
+
+  {% endif %}
+{% endfor %}
+</urlset>
