@@ -17,10 +17,7 @@ eleventyExcludeFromCollections: true
   %}
     <url>
     <loc>{{ base }}{{ page.url }}</loc>
-    {% if page.date %}
-    <lastmod>{{ page.date | date("yyyy") }}-{{ page.date | date("de-DE") | replace(".", "-") }}</lastmod>
-    {% endif %}
-  </url>
+    </url>
 
   {% endif %}
 {% endfor %}
