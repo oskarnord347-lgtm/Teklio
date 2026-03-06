@@ -1,4 +1,4 @@
----
+--- 
 layout: layouts/base.njk
 title: "Assistent"
 description: "Interaktiver Problemlösungs-Assistent für Technikprobleme."
@@ -53,6 +53,24 @@ permalink: "/assistent/index.html"
   </div>
 </section>
 
+<div id="progressWrap">
+  <div id="progressBar"></div>
+</div>
+
+<div class="cards-container" id="anleitung"></div>
+
+<div id="stepNav" style="display:none;">
+  <button id="prevStep" type="button">Zurück</button>
+  <span id="stepCounter"></span>
+  <button id="nextStep" type="button">Weiter</button>
+</div>
+
+<div id="helpFeedback" style="display:none; text-align:center;">
+  <p style="color: var(--muted); font-weight: 700;">Hat es geholfen?</p>
+  <button id="helpYes" type="button">Ja</button>
+  <button id="helpNo" type="button">Nein</button>
+</div>
+
 <section class="trust-section">
   <div class="wrap">
     <h2 class="trust-title">Warum Teklio?</h2>
@@ -80,26 +98,6 @@ permalink: "/assistent/index.html"
     </div>
   </div>
 </section>
-
-
-
-<div id="progressWrap">
-  <div id="progressBar"></div>
-</div>
-
-<div class="cards-container" id="anleitung"></div>
-
-<div id="stepNav" style="display:none;">
-  <button id="prevStep" type="button">Zurück</button>
-  <span id="stepCounter"></span>
-  <button id="nextStep" type="button">Weiter</button>
-</div>
-
-<div id="helpFeedback" style="display:none; text-align:center;">
-  <p style="color: var(--muted); font-weight: 700;">Hat es geholfen?</p>
-  <button id="helpYes" type="button">Ja</button>
-  <button id="helpNo" type="button">Nein</button>
-</div>
 
 <button id="feedbackBtn" type="button">Feedback</button>
 
